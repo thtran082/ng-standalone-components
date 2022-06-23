@@ -1,4 +1,4 @@
-import { inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { ComponentStore } from "@ngrx/component-store";
 import { IAuthState } from "./auth.state";
 import { filter, of, switchMap } from "rxjs";
@@ -6,7 +6,7 @@ import { IUser } from "./model";
 import { Router } from "@angular/router";
 import { NG_MYAPP_TOKEN } from "./constants";
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class AuthStore extends ComponentStore<IAuthState> {
   readonly user$ = this.select(s => s.user);
   readonly profile$ = this.select(s => s.profile);
@@ -31,9 +31,7 @@ export class AuthStore extends ComponentStore<IAuthState> {
     { debounce: true }
   );
 
-  private readonly _router = inject(Router);
-
-  constructor() {
+  constructor(private _router: Router) {
     super(initialAuthState);
   }
 

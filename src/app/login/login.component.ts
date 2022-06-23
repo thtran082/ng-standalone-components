@@ -12,7 +12,8 @@ const COMPONENTS = [AuthLayoutComponent];
 @Component({
   selector: "app-login",
   standalone: true,
-  imports: [...COMMON_MODULES, ...COMPONENTS],
+  imports: [COMMON_MODULES, COMPONENTS],
+  providers: [LoginStore],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

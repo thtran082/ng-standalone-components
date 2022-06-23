@@ -1,4 +1,4 @@
-import { inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { ComponentStore, tapResponse } from "@ngrx/component-store";
 import { ILoginState } from "./login.state";
 import { exhaustMap, of } from "rxjs";
@@ -17,9 +17,8 @@ export class LoginStore extends ComponentStore<ILoginState> {
     }
   )
 
-  private _authStore = inject(AuthStore);
 
-  constructor() {
+  constructor(private _authStore: AuthStore) {
     super(initialLoginState);
   }
 

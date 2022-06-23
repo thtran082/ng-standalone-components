@@ -6,7 +6,6 @@ import { map, Observable, take } from "rxjs";
 @Injectable({ providedIn: "root" })
 export class NonAuthGuard implements CanActivate, CanLoad {
   constructor(private _authStore: AuthStore, private _router: Router) {
-    console.log("im hể");
   }
 
   canActivate(): Observable<boolean | UrlTree> {

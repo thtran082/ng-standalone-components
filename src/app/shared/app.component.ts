@@ -2,6 +2,7 @@ import { Component, importProvidersFrom } from "@angular/core";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
+import { BASE_URL } from "./di/token";
 
 @Component({
   selector: "app-root",
@@ -17,6 +18,7 @@ export class AppComponent {
   static bootstrap() {
     bootstrapApplication(this, {
       providers: [
+        { provide: BASE_URL, useValue: "http://localhost:4200" },
         importProvidersFrom(
           RouterModule.forRoot(
             [
@@ -25,10 +27,7 @@ export class AppComponent {
                 loadComponent: () => import("../layout/layout.component").then(m => m.LayoutComponent),
                 loadChildren: () => import("../layout/layout.routes").then(m => m.routes),
               }
-            ],
-            {
-              useHash: true
-            }
+            ]
           ),
           HttpClientModule
         )
