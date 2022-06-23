@@ -8,8 +8,19 @@ export const routes: Routes = [
   },
   {
     path: "login",
-    canLoad: [NonAuthGuard],
     canActivate: [NonAuthGuard],
-    loadComponent: () => import('../login/login.component').then(m => m.LoginComponent)
+    canLoad: [NonAuthGuard],
+    loadComponent: () => import("../login/login.component").then(m => m.LoginComponent)
+  },
+  {
+    path: "**",
+    redirectTo: "/not-found",
+    pathMatch: "full"
+  },
+  {
+    path: "not-found",
+    canActivate: [NonAuthGuard],
+    canLoad: [NonAuthGuard],
+    loadComponent: () => import("../error/error.component").then(m => m.ErrorComponent),
   }
 ];

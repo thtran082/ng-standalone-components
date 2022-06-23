@@ -1,8 +1,9 @@
-import { Component, importProvidersFrom } from "@angular/core";
+import { Component, importProvidersFrom, OnInit } from "@angular/core";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
 import { BASE_URL } from "./di/token";
+import { AuthStore } from "./data-access";
 
 @Component({
   selector: "app-root",
@@ -12,8 +13,13 @@ import { BASE_URL } from "./di/token";
   standalone: true,
   imports: [RouterModule],
 })
-export class AppComponent {
-  title = "ng-standalone-components";
+export class AppComponent implements OnInit {
+  constructor(private _authStore: AuthStore) {
+  }
+
+  ngOnInit(): void {
+    this._authStore.init();
+  }
 
   static bootstrap() {
     bootstrapApplication(this, {
