@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { ComponentStore, tapResponse } from "@ngrx/component-store";
 import { IAuthState } from "./auth.state";
-import { defer, filter, of, switchMap } from "rxjs";
+import { defer, filter, of, switchMap, tap } from "rxjs";
 import { IUser } from "./model";
 import { Router } from "@angular/router";
 import { NG_MYAPP_TOKEN, NG_MYAPP_USER } from "./constants";
 import { ApiClient } from "./api";
+import { LocalStorageService } from "./local-storage.service";
 
 @Injectable({ providedIn: "root" })
 export class AuthStore extends ComponentStore<IAuthState> {
@@ -32,7 +33,11 @@ export class AuthStore extends ComponentStore<IAuthState> {
     { debounce: true }
   );
 
-  constructor(private _router: Router, private _apiClient: ApiClient) {
+  constructor(
+    private _router: Router,
+    private _apiClient: ApiClient,
+    private _localStorageService: LocalStorageService
+  ) {
     super(initialAuthState);
   }
 
@@ -45,10 +50,19 @@ export class AuthStore extends ComponentStore<IAuthState> {
     void this._router.navigate(url);
   }
 
+  readonly logout = this.effect<void>(
+    tap(() => {
+      this._localStorageService.removeItem(NG_MYAPP_TOKEN);
+      this._localStorageService.removeItem(NG_MYAPP_USER);
+      void this._router.navigate(["/"]);
+      this._refresh();
+    })
+  );
+
   private _refresh = this.effect<void>(
     switchMap(() =>
       defer(() => {
-        const token = localStorage.getItem(NG_MYAPP_TOKEN);
+        const token = this._localStorageService.getItem(NG_MYAPP_TOKEN);
         // TODO: call API later
         return !token ? of(null) : this._apiClient.login();
       }).pipe(
@@ -58,7 +72,7 @@ export class AuthStore extends ComponentStore<IAuthState> {
               user: response?.user || null,
               status: !!response ? "authenticated" : "unauthenticated",
             });
-            localStorage.setItem(NG_MYAPP_USER, JSON.stringify(response?.user));
+            this._localStorageService.setItem(NG_MYAPP_USER, JSON.stringify(response?.user));
           },
           error => {
             console.error("error refreshing current user: ", error);

@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-import { NonAuthGuard } from "../shared/data-access";
+import { AuthGuard, NonAuthGuard } from "../shared/data-access";
 
 export const routes: Routes = [
   {
@@ -14,14 +14,14 @@ export const routes: Routes = [
   },
   {
     path: "profile",
-    // canActivate: [NonAuthGuard],
-    // canLoad: [NonAuthGuard],
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     loadComponent: () => import("../profile/profile.component").then(m => m.ProfileComponent)
   },
   {
     path: "setting",
-    // canActivate: [NonAuthGuard],
-    // canLoad: [NonAuthGuard],
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     loadComponent: () => import("../setting/setting.component").then(m => m.SettingComponent)
   },
   {

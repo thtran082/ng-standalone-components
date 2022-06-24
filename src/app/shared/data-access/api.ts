@@ -9,7 +9,7 @@ export class ApiClient {
   }
 
   login(): Observable<IUserResponse> {
-    const url = "/assets/api/login-user.json";
+    const url = "/login-user.json";
     return this._http.get<IUser>(url).pipe(
       map(user => ({ user }))
     )

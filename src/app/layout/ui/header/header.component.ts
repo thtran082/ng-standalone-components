@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
+import { AuthStore } from "../../../shared/data-access";
 
 @Component({
   selector: "app-header",
@@ -39,7 +40,12 @@ import { RouterModule } from "@angular/router";
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }">
                 <i class="ion-person"></i>
-                  &nbsp;{{username}}
+                &nbsp;{{username}}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="logout()">
+                logout
               </a>
             </li>
           </ng-container>
@@ -56,6 +62,15 @@ import { RouterModule } from "@angular/router";
           Sign Up
         </a>
       </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/login"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true}">
+          Sign In
+        </a>
+      </li>
     </ng-template>
   `,
   encapsulation: ViewEncapsulation.None,
@@ -63,12 +78,15 @@ import { RouterModule } from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
   @Input() isAuthenticated = false;
-  @Input() username = '';
+  @Input() username = "";
 
-  constructor() {
+  constructor(private _store: AuthStore) {
   }
 
   ngOnInit(): void {
   }
 
+  logout() {
+    this._store.logout();
+  }
 }
