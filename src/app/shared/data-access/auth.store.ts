@@ -5,6 +5,7 @@ import { defer, filter, of, switchMap } from "rxjs";
 import { IUser } from "./model";
 import { Router } from "@angular/router";
 import { NG_MYAPP_TOKEN, NG_MYAPP_USER } from "./constants";
+import { ApiClient } from "./api";
 
 @Injectable({ providedIn: "root" })
 export class AuthStore extends ComponentStore<IAuthState> {
@@ -31,7 +32,7 @@ export class AuthStore extends ComponentStore<IAuthState> {
     { debounce: true }
   );
 
-  constructor(private _router: Router) {
+  constructor(private _router: Router, private _apiClient: ApiClient) {
     super(initialAuthState);
   }
 
@@ -47,9 +48,9 @@ export class AuthStore extends ComponentStore<IAuthState> {
   private _refresh = this.effect<void>(
     switchMap(() =>
       defer(() => {
-        const a = localStorage.getItem(NG_MYAPP_TOKEN);
+        const token = localStorage.getItem(NG_MYAPP_TOKEN);
         // TODO: call API later
-        return !a ? of(null) : this.auth$;
+        return !token ? of(null) : this._apiClient.login();
       }).pipe(
         tapResponse(
           response => {

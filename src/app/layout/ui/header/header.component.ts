@@ -17,11 +17,31 @@ import { RouterModule } from "@angular/router";
               routerLink="/"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true}">
-              Home
+              <i class="ion-home"></i>
+              &nbsp;Home
             </a>
           </li>
           <ng-container *ngIf="isAuthenticated; else nonAuthenticated">
-            is Authenticated
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/setting"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <i class="ion-gear-b"></i>
+                &nbsp;Settings
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/profile"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <i class="ion-person"></i>
+                  &nbsp;{{username}}
+              </a>
+            </li>
           </ng-container>
         </ul>
       </div>
@@ -43,7 +63,7 @@ import { RouterModule } from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
   @Input() isAuthenticated = false;
-  @Input() userName?: string;
+  @Input() username = '';
 
   constructor() {
   }

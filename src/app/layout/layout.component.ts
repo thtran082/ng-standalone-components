@@ -10,9 +10,11 @@ import { CommonModule } from "@angular/common";
   standalone: true,
   template: `
     <ng-container *ngIf="auth$ | async as auth">
-      <app-header [isAuthenticated]="auth.isAuthenticated" [userName]="auth.user?.username"
+      <app-header [isAuthenticated]="auth.isAuthenticated" [username]="auth.user?.username || ''"
       ></app-header>
-      <router-outlet></router-outlet>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
       <app-footer></app-footer>
     </ng-container>
   `,

@@ -20,7 +20,7 @@ export class NonAuthGuard implements CanActivate, CanLoad {
     return this._authStore.isAuthenticated$.pipe(
       map(isAuthenticated => {
         if (!isAuthenticated) return !isAuthenticated;
-        return this._router.parseUrl("/not-found");
+        return this._router.parseUrl("/");
       }),
       take(1),
     );

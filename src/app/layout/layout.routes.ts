@@ -13,6 +13,18 @@ export const routes: Routes = [
     loadComponent: () => import("../login/login.component").then(m => m.LoginComponent)
   },
   {
+    path: "profile",
+    // canActivate: [NonAuthGuard],
+    // canLoad: [NonAuthGuard],
+    loadComponent: () => import("../profile/profile.component").then(m => m.ProfileComponent)
+  },
+  {
+    path: "setting",
+    // canActivate: [NonAuthGuard],
+    // canLoad: [NonAuthGuard],
+    loadComponent: () => import("../setting/setting.component").then(m => m.SettingComponent)
+  },
+  {
     path: "**",
     redirectTo: "/not-found",
     pathMatch: "full"
