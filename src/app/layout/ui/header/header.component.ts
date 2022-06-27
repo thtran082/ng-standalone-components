@@ -2,23 +2,27 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } 
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { AuthStore } from "../../../shared/data-access";
+import { CdkMenuModule } from "@angular/cdk/menu";
+
+const COMMON_MODULES = [CommonModule, RouterModule];
+
+const MAT_MODULES = [CdkMenuModule];
 
 @Component({
   selector: "app-header",
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [COMMON_MODULES, MAT_MODULES],
   template: `
-    <nav class="navbar navbar-light">
-      <div class="container">
-        <a routerLink="/" class="navbar-brand">AppName</a>
-        <ul class="nav navbar-nav pull-xs-right">
+    <nav class="bg-white">
+      <div class="container mx-auto my-4 flex flex-row justify-between items-center">
+        <a routerLink="/" class="no-underline text-[#5cb85c] font-bold text-base">MyBlog</a>
+        <ul class="flex flex-row gap-4 text-[#bbb] text-sm">
           <li class="nav-item">
             <a
               class="nav-link"
               routerLink="/"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true}">
-              <i class="ion-home"></i>
               &nbsp;Home
             </a>
           </li>
@@ -29,12 +33,12 @@ import { AuthStore } from "../../../shared/data-access";
                 routerLink="/setting"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }">
-                <i class="ion-gear-b"></i>
                 &nbsp;Settings
               </a>
             </li>
             <li class="nav-item">
               <a
+                [cdkMenuTriggerFor]="menu"
                 class="nav-link"
                 routerLink="/profile"
                 routerLinkActive="active"
@@ -43,15 +47,18 @@ import { AuthStore } from "../../../shared/data-access";
                 &nbsp;{{username}}
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" (click)="logout()">
-                logout
-              </a>
-            </li>
           </ng-container>
         </ul>
       </div>
     </nav>
+    <ng-template #menu>
+      <div cdkMenu class="flex flex-col shadow-md rounded-sm mx-4 bg-white">
+        <a cdkMenuItem class="px-4 py-3 capitalize text-red-300 hover:text-red-500" (click)="logout()">
+          <i class="ion-log-out mr-1"></i>
+          sign out
+        </a>
+      </div>
+    </ng-template>
     <ng-template #nonAuthenticated>
       <li class="nav-item">
         <a

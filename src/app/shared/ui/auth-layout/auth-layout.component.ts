@@ -9,7 +9,7 @@ import { CommonModule } from "@angular/common";
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="auth-page">
-      <div class="container page">
+      <div class="container mx-auto">
         <div class="row">
           <div class="col-md-6 offset-md-3 col-xs-12">
             <ng-content></ng-content>
