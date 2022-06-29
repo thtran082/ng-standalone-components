@@ -1,12 +1,11 @@
-import { ContentChild, Directive, TemplateRef } from "@angular/core";
-import { NavbarItemLinkDirective } from "./navbar-item-link.directive";
+import { Directive, Input, TemplateRef } from "@angular/core";
 
 @Directive({
-  selector: "[appNavbarItem]",
+  selector: "[appNavbarItem], [app-navbar-item]",
   standalone: true,
 })
 export class NavbarItemDirective {
-  @ContentChild(NavbarItemLinkDirective, { static: true }) itemLink!: NavbarItemLinkDirective;
+  @Input() link!: string;
 
   constructor(public templateRef: TemplateRef<HTMLElement>) {
   }
