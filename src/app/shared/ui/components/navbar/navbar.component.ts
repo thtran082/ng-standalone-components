@@ -15,13 +15,13 @@ const DIRECTIVES = [NavbarItemDirective];
   imports: [ANGULAR_MODULES, MAT_MODULES, DIRECTIVES],
   template: `
     <nav class="w-full py-3 bg-transparent flex flex-row justify-between">
-      <a routerLink="/" class="no-underline text-[#5cb85c] font-bold text-base">MyBlog</a>
+      <a routerLink="/" class="no-underline text-blue-400 font-bold text-base">MyBlog</a>
       <ul class="flex flex-row gap-4">
         <ng-container *ngIf="auth$ | async as auth">
           <ng-container *ngIf="auth.isAuthenticated; else nonAuthenticated">
             <li
               *ngFor="let item of items"
-              class="cursor-pointer capitalize font-titillium hover:text-black hover:font-semibold text-[#bbb]"
+              class="cursor-pointer capitalize font-titillium hover:text-black hover:font-semibold text-slate-400"
             >
               <a
                 routerLinkActive="active"
@@ -31,7 +31,7 @@ const DIRECTIVES = [NavbarItemDirective];
                 <ng-template [ngTemplateOutlet]="item.templateRef"></ng-template>
               </a>
             </li>
-            <li class="cursor-pointer capitalize font-titillium hover:text-black hover:font-semibold text-[#bbb]">
+            <li class="cursor-pointer capitalize font-titillium hover:text-black hover:font-semibold text-slate-400">
               <a
                 [cdkMenuTriggerFor]="menu"
                 #menuTrigger="cdkMenuTriggerFor"

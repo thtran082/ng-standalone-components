@@ -47,5 +47,5 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .active {
-  @apply text-black;
+  @apply text-blue-500 font-bold;
 }

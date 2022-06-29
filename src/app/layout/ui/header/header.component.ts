@@ -15,7 +15,7 @@ const DIRECTIVES = [NavbarItemDirective];
   standalone: true,
   imports: [ANGULAR_MODULES, MAT_MODULES, COMPONENTS, DIRECTIVES],
   template: `
-    <div class="container mx-auto">
+    <div class="container mx-auto mb-8">
       <app-navbar>
         <ng-template appNavbarItem link="/">home</ng-template>
         <ng-template appNavbarItem link="/setting">

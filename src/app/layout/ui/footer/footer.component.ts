@@ -7,12 +7,12 @@ import { CommonModule } from "@angular/common";
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <footer class="bg-[#f3f3f3] mt-12 py-4 px-0 absolute bottom-0 w-full">
+    <footer class="bg-slate-100 mt-12 py-4 px-0 absolute bottom-0 w-full">
       <div class="container mx-auto px-4">
-        <a class="text-[#5cb85c] no-underline font-titillium font-bold text-base" routerLink="/">MyBlog</a>
-        <span class="ml-3 text-xs text-[#bbb] font-light">
+        <a class="text-blue-400 no-underline font-titillium font-bold text-base" routerLink="/">MyBlog</a>
+        <span class="ml-3 text-xs text-slate-400 font-light">
           <span class="">Angular 14 standalone app -&nbsp;</span>
-          <a class="text-[#5cb85c]" href="https://github.com/thtran082" target="blank">thtran.082@gmail.com</a>
+          <a class="text-blue-400" href="https://github.com/thtran082" target="blank">thtran.082@gmail.com</a>
         </span>
       </div>
     </footer>
