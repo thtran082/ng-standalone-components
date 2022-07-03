@@ -1,0 +1,26 @@
+<app-auth-layout>
+  <h1 class="text-xs-center">Sign In</h1>
+  <p class="text-xs-center">
+    <a routerLink="/register">Need an account?</a>
+  </p>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <fieldset class="form-group">
+      <input type="text" required class="form-control form-control-lg" placeholder="email" formControlName="email" />
+      <span *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.['required']" class="text-danger">
+        Required
+      </span>
+    </fieldset>
+    <fieldset class="form-group">
+      <input type="password" required class="form-control form-control-lg" placeholder="password"
+        formControlName="password" />
+      <span *ngIf="password.invalid && (password.dirty || password.touched) && password.errors?.['required']">
+        Required
+      </span>
+    </fieldset>
+    <button type="submit" class="btn btn-lg btn-primary pull-xs-right" [disabled]="form.invalid">
+      Sign In
+    </button>
+  </form>
+
+</app-auth-layout>

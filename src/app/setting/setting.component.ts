@@ -1,23 +1,14 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-setting',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <p>
-      setting works!
-    </p>
-  `,
-  styles: [
-  ]
+  templateUrl: './setting.component.html',
 })
 export class SettingComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

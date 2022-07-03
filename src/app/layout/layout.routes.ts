@@ -1,38 +1,36 @@
-import { Routes } from "@angular/router";
-import { AuthGuard, NonAuthGuard } from "../shared/data-access";
+import { Routes } from '@angular/router';
+import { AuthGuard, NonAuthGuard } from '../shared/data-access';
 
 export const routes: Routes = [
   {
-    path: "",
-    loadComponent: () => import("../home/home.component").then(m => m.HomeComponent)
+    path: '',
+    loadComponent: () =>
+      import('../home/home.component').then((m) => m.HomeComponent),
   },
   {
-    path: "login",
+    path: 'login',
     canActivate: [NonAuthGuard],
     canLoad: [NonAuthGuard],
-    loadComponent: () => import("../login/login.component").then(m => m.LoginComponent)
+    loadComponent: () =>
+      import('../login/login.component').then((m) => m.LoginComponent),
   },
   {
-    path: "profile",
+    path: 'profile',
     canActivate: [AuthGuard],
     canLoad: [AuthGuard],
-    loadComponent: () => import("../profile/profile.component").then(m => m.ProfileComponent)
+    loadComponent: () =>
+      import('../profile/profile.component').then((m) => m.ProfileComponent),
   },
   {
-    path: "setting",
+    path: 'setting',
     canActivate: [AuthGuard],
     canLoad: [AuthGuard],
-    loadComponent: () => import("../setting/setting.component").then(m => m.SettingComponent)
+    loadComponent: () =>
+      import('../setting/setting.component').then((m) => m.SettingComponent),
   },
   {
-    path: "**",
-    redirectTo: "/not-found",
-    pathMatch: "full"
+    path: '**',
+    redirectTo: '/not-found',
+    pathMatch: 'full',
   },
-  {
-    path: "not-found",
-    canActivate: [NonAuthGuard],
-    canLoad: [NonAuthGuard],
-    loadComponent: () => import("../error/error.component").then(m => m.ErrorComponent),
-  }
 ];
