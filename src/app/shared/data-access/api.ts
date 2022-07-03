@@ -1,17 +1,19 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { map, Observable } from "rxjs";
-import { IUser, IUserResponse } from "./model";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { IUser, IUserResponse, MultipleArticlesResponse } from './model';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class ApiClient {
-  constructor(private _http: HttpClient) {
-  }
+  constructor(private _http: HttpClient) {}
 
   login(): Observable<IUserResponse> {
-    const url = "/login-user.json";
-    return this._http.get<IUser>(url).pipe(
-      map(user => ({ user }))
-    )
+    const url = '/login-user.json';
+    return this._http.get<IUser>(url).pipe(map((user) => ({ user })));
+  }
+
+  getArticlesFeed(): Observable<MultipleArticlesResponse> {
+    const url = '/articles.json';
+    return this._http.get<MultipleArticlesResponse>(url);
   }
 }

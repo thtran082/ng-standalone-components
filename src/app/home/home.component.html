@@ -1,1 +1,3 @@
-<div class="container">Home works!</div>
+<div *ngIf="vm$ | async as vm" class="container">
+  {{vm.isAuthenticated}}
+</div>

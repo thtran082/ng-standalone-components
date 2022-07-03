@@ -5,6 +5,8 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
+import { provideComponentStore } from '@ngrx/component-store';
+import { HomeStore } from './home.store';
 
 @Component({
   selector: 'app-home',
@@ -12,10 +14,13 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   imports: [CommonModule],
+  providers: [provideComponentStore(HomeStore)],
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  constructor() {}
+  readonly vm$ = this._homeStore.vm$;
+
+  constructor(private _homeStore: HomeStore) {}
 
   ngOnInit(): void {}
 }
