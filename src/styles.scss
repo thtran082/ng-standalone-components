@@ -53,6 +53,7 @@ body {
 
 .active {
   @apply text-blue-500 font-bold;
+  
 }
 
 input {
@@ -68,4 +69,16 @@ button {
   &[primary] {
     @apply bg-blue-600 text-white capitalize;
   }
+}
+
+a {
+  @apply cursor-pointer;
+  &:hover:not(.disabled, .active) {
+    @apply text-black;
+  }
+}
+
+*:disabled,
+*.disabled {
+  @apply cursor-not-allowed select-none;
 }

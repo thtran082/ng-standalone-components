@@ -21,7 +21,7 @@ import { ApiStatus } from '../../../shared/data-access';
           <a
             *ngFor="let tag of tags"
             (click)="selectedTag.emit(tag)"
-            class="px-2 py-1 rounded-full bg-slate-500 text-white mr-2 mb-2 inline-block cursor-pointer hover:opacity-90"
+            class="px-2 py-1 rounded-full bg-slate-500 text-white mr-2 mb-2 inline-block"
           >
             #{{ tag }}
           </a>

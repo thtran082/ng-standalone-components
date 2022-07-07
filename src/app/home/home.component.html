@@ -1,6 +1,12 @@
 <th-banner></th-banner>
 <div class="container mx-auto mt-4">
   <div *ngIf="vm$ | async as vm" class="flex flex-row gap-8">
+    <div class="flex-1">
+      <div class="flex flex-col gap-4">
+        <th-feed-toggle></th-feed-toggle>
+        <th-article-list></th-article-list>
+      </div>
+    </div>
     <th-tags [status]="vm.tagStatus" [tags]="vm.tags" class="w-[300px]">
       <span>loading...</span>
     </th-tags>

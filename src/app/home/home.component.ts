@@ -7,10 +7,20 @@ import {
 } from '@angular/core';
 import { provideComponentStore } from '@ngrx/component-store';
 import { HomeStore } from './home.store';
-import { HomeUiBannerComponent, HomeUiTagsComponent } from './ui';
+import {
+  HomeUiArticleListComponent,
+  HomeUiBannerComponent,
+  HomeUiFeedToggleComponent,
+  HomeUiTagsComponent,
+} from './ui';
 
 const ANGULAR_MODULES = [CommonModule];
-const COMPONENTS = [HomeUiTagsComponent, HomeUiBannerComponent];
+const COMPONENTS = [
+  HomeUiTagsComponent,
+  HomeUiBannerComponent,
+  HomeUiFeedToggleComponent,
+  HomeUiArticleListComponent,
+];
 
 @Component({
   selector: 'th-home',
