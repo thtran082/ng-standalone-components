@@ -4,7 +4,6 @@ import { exhaustMap } from 'rxjs';
 import {
   ApiClient,
   AuthStore,
-  IUser,
   IUserLogin,
   LocalStorageService,
   NG_MYAPP_TOKEN,
@@ -21,6 +20,7 @@ export class LoginStore extends ComponentStore<ILoginState> {
   readonly loginEffect$ = this.select((s) => s.errors, {
     debounce: true,
   });
+
   readonly login = this.effect<IUserLogin>(
     exhaustMap((req) =>
       this._apiClient.login(req).pipe(
@@ -47,11 +47,3 @@ export class LoginStore extends ComponentStore<ILoginState> {
     super(initialLoginState);
   }
 }
-
-export const UserSampleData: IUser = {
-  bio: "Just call me Thanh, sounds like Thanks but no 's' at the end",
-  email: 'thtran.082@gmail.com',
-  image: '',
-  token: 'this-is-my-token',
-  username: 'Huy Tran Thanh',
-};
