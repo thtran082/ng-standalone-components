@@ -64,7 +64,7 @@ export class AuthStore extends ComponentStore<IAuthState> {
       defer(() => {
         const token = this._localStorageService.getItem(NG_MYAPP_TOKEN);
         // TODO: call API later
-        return !token ? of(null) : this._apiClient.login();
+        return !token ? of(null) : this._apiClient.getCurrentUser();
       }).pipe(
         tapResponse(
           response => {

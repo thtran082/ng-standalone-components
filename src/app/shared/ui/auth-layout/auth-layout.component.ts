@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-auth-layout',
+  selector: 'th-auth-layout',
   standalone: true,
   imports: [CommonModule],
   encapsulation: ViewEncapsulation.None,

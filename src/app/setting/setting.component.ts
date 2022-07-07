@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-setting',
+  selector: 'th-setting',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './setting.component.html',

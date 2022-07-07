@@ -20,7 +20,7 @@ const COMPONENTS = [NavbarComponent];
 const DIRECTIVES = [NavbarItemDirective];
 
 @Component({
-  selector: 'app-header',
+  selector: 'th-header',
   standalone: true,
   imports: [ANGULAR_MODULES, MAT_MODULES, COMPONENTS, DIRECTIVES],
   templateUrl: './header.component.html',

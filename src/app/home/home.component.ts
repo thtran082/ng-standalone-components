@@ -7,15 +7,19 @@ import {
 } from '@angular/core';
 import { provideComponentStore } from '@ngrx/component-store';
 import { HomeStore } from './home.store';
+import { HomeUiBannerComponent, HomeUiTagsComponent } from './ui';
+
+const ANGULAR_MODULES = [CommonModule];
+const COMPONENTS = [HomeUiTagsComponent, HomeUiBannerComponent];
 
 @Component({
-  selector: 'app-home',
+  selector: 'th-home',
   standalone: true,
+  templateUrl: './home.component.html',
+  imports: [ANGULAR_MODULES, COMPONENTS],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [CommonModule],
   providers: [provideComponentStore(HomeStore)],
-  templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
   readonly vm$ = this._homeStore.vm$;

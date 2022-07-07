@@ -10,7 +10,7 @@ const MAT_MODULES = [CdkMenuModule];
 const DIRECTIVES = [NavbarItemDirective];
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'th-navbar',
   standalone: true,
   imports: [ANGULAR_MODULES, MAT_MODULES, DIRECTIVES],
   templateUrl: './navbar.component.html',

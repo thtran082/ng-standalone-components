@@ -10,13 +10,21 @@ export interface IUserResponse {
   user: IUser;
 }
 
+export interface ILoginUserRequest {
+  user: IUserLogin;
+}
+
 export interface IProfile extends Omit<IUser, 'token' | 'email'> {
   following: boolean;
 }
 
-export interface ILogin {
+export interface IUserLogin {
   email: string;
   password: string;
+}
+
+export interface IUserSignUp extends IUserLogin {
+  username: string;
 }
 
 export type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
@@ -56,4 +64,8 @@ export interface TagsResponse {
 export interface MultipleArticlesResponse {
   articles: Article[];
   articlesCount: number;
+}
+
+export interface ITagsResponse {
+  tags: string[];
 }

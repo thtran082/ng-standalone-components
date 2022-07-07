@@ -1,3 +1,8 @@
-<div *ngIf="vm$ | async as vm" class="container">
-  {{vm.isAuthenticated}}
+<th-banner></th-banner>
+<div class="container mx-auto mt-4">
+  <div *ngIf="vm$ | async as vm" class="flex flex-row gap-8">
+    <th-tags [status]="vm.tagStatus" [tags]="vm.tags" class="w-[300px]">
+      <span>loading...</span>
+    </th-tags>
+  </div>
 </div>

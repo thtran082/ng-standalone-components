@@ -11,7 +11,7 @@ const COMPONENTS = [HeaderComponent, FooterComponent, AuthLayoutComponent];
 const MODULES = [RouterModule, CommonModule];
 
 @Component({
-  selector: 'app-layout',
+  selector: 'th-layout',
   standalone: true,
   templateUrl: './layout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

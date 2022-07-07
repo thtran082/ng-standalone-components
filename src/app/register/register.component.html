@@ -1,0 +1,23 @@
+<div class="container mx-auto">
+  <div class="mx-auto flex flex-col gap-2 space-between items-center">
+    <span class="text-center text-4xl text-blue-500 font-bold">Sign Up</span>
+    <span class="text-center text-base text-gray-400">
+      <a routerLink="/register">Have an account?</a>
+    </span>
+    <form (ngSubmit)="onSubmit()" [formGroup]="formGroup" autocomplete="off" class="w-full flex flex-col gap-4">
+      <fieldset class="w-full flex flex-col gap-2">
+        <input autocomplete="new-email" autofocus class="w-full" formControlName="email" placeholder="email" required
+          type="text" />
+      </fieldset>
+      <fieldset class="w-full flex flex-col gap-2">
+        <input autocomplete="new-password" class="w-full" formControlName="password" placeholder="password" required
+          type="password" />
+      </fieldset>
+      <fieldset>
+        <input autocomplete="new-username" class="w-full" formControlName="username" placeholder="username" required
+          type="text" />
+      </fieldset>
+      <button class="self-end" primary type="submit">sign up</button>
+    </form>
+  </div>
+</div>

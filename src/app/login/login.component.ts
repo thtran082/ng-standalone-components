@@ -1,26 +1,16 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { AuthLayoutComponent } from '../shared/ui';
-import { LoginStore } from './login.store';
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, } from "@angular/core";
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators, } from "@angular/forms";
+import { RouterModule } from "@angular/router";
+import { AuthLayoutComponent } from "../shared/ui";
+import { LoginStore } from "./login.store";
 
 const COMMON_MODULES = [CommonModule, ReactiveFormsModule, RouterModule];
 
-const COMPONENTS = [AuthLayoutComponent];
+const COMPONENTS = [AuthLayoutComponent,];
 
 @Component({
-  selector: 'app-login',
+  selector: 'th-login',
   standalone: true,
   imports: [COMMON_MODULES, COMPONENTS],
   providers: [LoginStore],
@@ -51,6 +41,8 @@ export class LoginComponent implements OnInit {
     password: ['', Validators.required],
   });
 
+  constructor(private _fb: FormBuilder, private _store: LoginStore) {}
+
   get email() {
     return this.form.get('email') as AbstractControl<string>;
   }
@@ -58,8 +50,6 @@ export class LoginComponent implements OnInit {
   get password() {
     return this.form.get('password') as AbstractControl<string>;
   }
-
-  constructor(private _fb: FormBuilder, private _store: LoginStore) {}
 
   ngOnInit(): void {}
 
