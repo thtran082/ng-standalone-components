@@ -1,27 +1,27 @@
-import { Injectable } from "@angular/core";
-import { ComponentStore, tapResponse } from "@ngrx/component-store";
-import { IAuthState } from "./auth.state";
-import { defer, filter, of, switchMap, tap } from "rxjs";
-import { IUser } from "./model";
-import { Router } from "@angular/router";
-import { NG_MYAPP_TOKEN, NG_MYAPP_USER } from "./constants";
-import { ApiClient } from "./api";
-import { LocalStorageService } from "./local-storage.service";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { ComponentStore, tapResponse } from '@ngrx/component-store';
+import { defer, filter, of, switchMap, tap } from 'rxjs';
+import { ApiClient } from './api';
+import { IAuthState } from './auth.state';
+import { NG_MYBLOG_TOKEN, NG_MYBLOG_USER } from './constants';
+import { LocalStorageService } from './local-storage.service';
+import { IUser } from './model';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class AuthStore extends ComponentStore<IAuthState> {
-  readonly user$ = this.select(s => s.user);
-  readonly profile$ = this.select(s => s.profile);
-  readonly status$ = this.select(s => s.status);
+  readonly user$ = this.select((s) => s.user);
+  readonly profile$ = this.select((s) => s.profile);
+  readonly status$ = this.select((s) => s.status);
 
   readonly username$ = this.select(
     this.user$.pipe(filter((user): user is IUser => !!user)),
-    user => user.username
+    (user) => user.username
   );
 
   readonly isAuthenticated$ = this.select(
-    this.status$.pipe(filter((status) => status !== "idle")),
-    status => status === "authenticated",
+    this.status$.pipe(filter((status) => status !== 'idle')),
+    (status) => status === 'authenticated',
     { debounce: true }
   );
 
@@ -45,16 +45,16 @@ export class AuthStore extends ComponentStore<IAuthState> {
     this._refresh();
   }
 
-  authenticate(url: string[] = [""]) {
+  authenticate(url: string[] = ['']) {
     this._refresh();
     void this._router.navigate(url);
   }
 
   readonly logout = this.effect<void>(
     tap(() => {
-      this._localStorageService.removeItem(NG_MYAPP_TOKEN);
-      this._localStorageService.removeItem(NG_MYAPP_USER);
-      void this._router.navigate(["/"]);
+      this._localStorageService.removeItem(NG_MYBLOG_TOKEN);
+      this._localStorageService.removeItem(NG_MYBLOG_USER);
+      void this._router.navigate(['/']);
       this._refresh();
     })
   );
@@ -62,30 +62,33 @@ export class AuthStore extends ComponentStore<IAuthState> {
   private _refresh = this.effect<void>(
     switchMap(() =>
       defer(() => {
-        const token = this._localStorageService.getItem(NG_MYAPP_TOKEN);
+        const token = this._localStorageService.getItem(NG_MYBLOG_TOKEN);
         // TODO: call API later
         return !token ? of(null) : this._apiClient.getCurrentUser();
       }).pipe(
         tapResponse(
-          response => {
+          (response) => {
             this.patchState({
               user: response?.user || null,
-              status: !!response ? "authenticated" : "unauthenticated",
+              status: !!response ? 'authenticated' : 'unauthenticated',
             });
-            this._localStorageService.setItem(NG_MYAPP_USER, JSON.stringify(response?.user));
+            this._localStorageService.setItem(
+              NG_MYBLOG_USER,
+              JSON.stringify(response?.user)
+            );
           },
-          error => {
-            console.error("error refreshing current user: ", error);
-            this.patchState({ user: null, status: "unauthenticated" });
+          (error) => {
+            console.error('error refreshing current user: ', error);
+            this.patchState({ user: null, status: 'unauthenticated' });
           }
         )
       )
     )
-  )
+  );
 }
 
 export const initialAuthState: IAuthState = {
-  status: "idle",
+  status: 'idle',
   profile: null,
   user: null,
-}
+};

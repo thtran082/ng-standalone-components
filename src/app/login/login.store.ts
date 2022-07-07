@@ -6,8 +6,8 @@ import {
   AuthStore,
   IUserLogin,
   LocalStorageService,
-  NG_MYAPP_TOKEN,
-  NG_MYAPP_USER,
+  NG_MYBLOG_TOKEN,
+  NG_MYBLOG_USER,
 } from '../shared/data-access';
 import { ILoginState } from './login.state';
 
@@ -26,8 +26,8 @@ export class LoginStore extends ComponentStore<ILoginState> {
       this._apiClient.login(req).pipe(
         tapResponse(
           (response) => {
-            localStorage.setItem(NG_MYAPP_TOKEN, response.user.token);
-            localStorage.setItem(NG_MYAPP_USER, JSON.stringify(response.user));
+            localStorage.setItem(NG_MYBLOG_TOKEN, response.user.token);
+            localStorage.setItem(NG_MYBLOG_USER, JSON.stringify(response.user));
             this._authStore.authenticate();
           },
           (error: ILoginState) => {
