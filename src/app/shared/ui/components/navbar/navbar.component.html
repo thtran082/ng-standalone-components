@@ -1,5 +1,5 @@
 <nav class="w-full py-3 bg-transparent flex flex-row justify-between">
-  <a routerLink="/" class="no-underline text-blue-400 font-bold text-base">MyBlog</a>
+  <a routerLink="/" class="no-underline text-blue-400 font-bold text-base">NgConduit</a>
   <ul class="flex flex-row gap-4">
     <ng-container *ngIf="auth$ | async as auth">
       <ng-container *ngIf="auth.isAuthenticated; else nonAuthenticated">

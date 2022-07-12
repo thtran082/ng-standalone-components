@@ -4,7 +4,7 @@ import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { defer, filter, of, switchMap, tap } from 'rxjs';
 import { ApiClient } from './api';
 import { IAuthState } from './auth.state';
-import { NG_MYBLOG_TOKEN, NG_MYBLOG_USER } from './constants';
+import { NG_CONDUIT_TOKEN, NG_CONDUIT_USER } from './constants';
 import { LocalStorageService } from './local-storage.service';
 import { IUser } from './model';
 
@@ -52,8 +52,8 @@ export class AuthStore extends ComponentStore<IAuthState> {
 
   readonly logout = this.effect<void>(
     tap(() => {
-      this._localStorageService.removeItem(NG_MYBLOG_TOKEN);
-      this._localStorageService.removeItem(NG_MYBLOG_USER);
+      this._localStorageService.removeItem(NG_CONDUIT_TOKEN);
+      this._localStorageService.removeItem(NG_CONDUIT_USER);
       void this._router.navigate(['/']);
       this._refresh();
     })
@@ -62,7 +62,7 @@ export class AuthStore extends ComponentStore<IAuthState> {
   private _refresh = this.effect<void>(
     switchMap(() =>
       defer(() => {
-        const token = this._localStorageService.getItem(NG_MYBLOG_TOKEN);
+        const token = this._localStorageService.getItem(NG_CONDUIT_TOKEN);
         // TODO: call API later
         return !token ? of(null) : this._apiClient.getCurrentUser();
       }).pipe(
@@ -73,7 +73,7 @@ export class AuthStore extends ComponentStore<IAuthState> {
               status: !!response ? 'authenticated' : 'unauthenticated',
             });
             this._localStorageService.setItem(
-              NG_MYBLOG_USER,
+              NG_CONDUIT_USER,
               JSON.stringify(response?.user)
             );
           },

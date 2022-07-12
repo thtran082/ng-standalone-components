@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   imports: [CommonModule],
   template: `
     <div class="bg-blue-400 text-white gap-4 p-8 text-center">
-      <h1 class="!text-5xl !font-extrabold text-shadow">My Blog</h1>
+      <h1 class="!text-5xl !font-extrabold text-shadow">NgConduit</h1>
       <p class="text-lg font-thin">
         This project is written by Angular, forked from
         <a

@@ -22,7 +22,7 @@ import {
               'active !border-b-blue-400': feedType === 'feed',
               'disabled': isFeedDisabled
             }"
-            (click)="isFeedDisabled && selectFeed.emit()"
+            (click)="!isFeedDisabled && selectFeed.emit()"
             >your feed</a
           >
         </li>

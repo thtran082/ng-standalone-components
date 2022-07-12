@@ -6,8 +6,8 @@ import {
   AuthStore,
   IUserSignUp,
   LocalStorageService,
-  NG_MYBLOG_TOKEN,
-  NG_MYBLOG_USER,
+  NG_CONDUIT_TOKEN,
+  NG_CONDUIT_USER
 } from '../shared/data-access';
 import { IRegisterState } from './register.state';
 
@@ -19,10 +19,10 @@ export class RegisterStore extends ComponentStore<IRegisterState> {
         tapResponse(
           (response) => {
             this._localStorageService.setItem(
-              NG_MYBLOG_TOKEN,
+              NG_CONDUIT_TOKEN,
               response.user.token
             );
-            this._localStorageService.setItem(NG_MYBLOG_USER, response.user);
+            this._localStorageService.setItem(NG_CONDUIT_USER, response.user);
             this._authStore.authenticate();
           },
           (error: { errors: Record<string, any> }) => {

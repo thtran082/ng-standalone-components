@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import {
   ComponentStore,
   OnStateInit,
-  tapResponse,
+  tapResponse
 } from '@ngrx/component-store';
 import { filter, MonoTypeOperatorFunction, pipe, switchMap, tap } from 'rxjs';
 import {
   ApiClient,
   ApiStatus,
   AuthStore,
-  MultipleArticlesResponse,
+  MultipleArticlesResponse
 } from '../shared/data-access';
 import { Article } from './../shared/data-access/model';
 import { IHomeState } from './home.state';
@@ -40,10 +40,12 @@ export class HomeStore
   vm$ = this.select(
     this._authStore.isAuthenticated$,
     this.select((s) => s.tags),
+    this.select((s) => s.feedType),
     this.tagsStatus$.pipe(filter((status) => status !== 'idle')),
-    (isAuthenticated, tags, tagStatus) => ({
+    (isAuthenticated, tags, feedType, tagStatus) => ({
       isAuthenticated,
       tags,
+      feedType,
       tagStatus,
     })
   );
@@ -88,7 +90,7 @@ export class HomeStore
           )
         )
       )
-    )
+    ) 
   );
 
   constructor(private _authStore: AuthStore, private _apiClient: ApiClient) {

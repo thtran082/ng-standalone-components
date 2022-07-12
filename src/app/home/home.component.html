@@ -3,7 +3,10 @@
   <div *ngIf="vm$ | async as vm" class="flex flex-row gap-8">
     <div class="flex-1">
       <div class="flex flex-col gap-4">
-        <th-feed-toggle></th-feed-toggle>
+        <th-feed-toggle
+        [isFeedDisabled]="!vm.isAuthenticated"
+        [feedType]="vm.feedType"
+        ></th-feed-toggle>
         <th-article-list></th-article-list>
       </div>
     </div>

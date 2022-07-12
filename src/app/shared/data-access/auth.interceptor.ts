@@ -1,14 +1,14 @@
 import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HTTP_INTERCEPTORS,
+    HttpEvent,
+    HttpHandler,
+    HttpInterceptor,
+    HttpRequest,
+    HTTP_INTERCEPTORS
 } from '@angular/common/http';
 import { Inject, Injectable, Provider } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../di/token';
-import { NG_MYBLOG_TOKEN } from './constants';
+import { NG_CONDUIT_TOKEN } from './constants';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     req = req.clone({ url: this._baseUrl + req.url });
-    const token = this._localStorageService.getItem(NG_MYBLOG_TOKEN);
+    const token = this._localStorageService.getItem(NG_CONDUIT_TOKEN);
     if (token) {
       req = req.clone({
         setHeaders: {
