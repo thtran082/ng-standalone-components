@@ -37,15 +37,24 @@ export class HomeStore
     (statuses) => statuses['tags']
   );
 
+  readonly articlesStatus$ = this.select(
+    this.statuses$,
+    (statuses) => statuses['articles']
+  );
+
   vm$ = this.select(
     this._authStore.isAuthenticated$,
     this.select((s) => s.tags),
     this.select((s) => s.feedType),
+    this.select((s) => s.articles),
+    this.articlesStatus$.pipe(filter((status) => status !== 'idle')),
     this.tagsStatus$.pipe(filter((status) => status !== 'idle')),
-    (isAuthenticated, tags, feedType, tagStatus) => ({
+    (isAuthenticated, tags, feedType, articles, articlesStatus, tagStatus) => ({
       isAuthenticated,
       tags,
       feedType,
+      articles,
+      articlesStatus,
       tagStatus,
     })
   );
@@ -90,7 +99,7 @@ export class HomeStore
           )
         )
       )
-    ) 
+    )
   );
 
   constructor(private _authStore: AuthStore, private _apiClient: ApiClient) {

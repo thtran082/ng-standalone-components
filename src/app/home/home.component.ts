@@ -3,15 +3,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
 import { provideComponentStore } from '@ngrx/component-store';
 import { HomeStore } from './home.store';
 import {
   HomeUiArticleListComponent,
+  HomeUiArticlePreviewComponent,
   HomeUiBannerComponent,
   HomeUiFeedToggleComponent,
-  HomeUiTagsComponent,
+  HomeUiTagsComponent
 } from './ui';
 
 const ANGULAR_MODULES = [CommonModule];
@@ -20,6 +21,7 @@ const COMPONENTS = [
   HomeUiBannerComponent,
   HomeUiFeedToggleComponent,
   HomeUiArticleListComponent,
+  HomeUiArticlePreviewComponent,
 ];
 
 @Component({

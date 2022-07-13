@@ -50,6 +50,7 @@ module.exports = {
     fontFamily: {
       ...fontFamily,
       "titillium": ["Titillium"],
+      "source-sans-pro": ["Source Sans Pro"],
     }
   },
   plugins: [],
