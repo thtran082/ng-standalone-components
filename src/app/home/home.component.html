@@ -4,7 +4,7 @@
     <div class="flex-1">
       <div class="flex flex-col">
         <th-feed-toggle [isFeedDisabled]="!vm.isAuthenticated" [feedType]="vm.feedType"></th-feed-toggle>
-        <th-article-list [status]="vm.articlesStatus" [articles]="vm.articles"></th-article-list>
+        <th-article-list [status]="vm.articlesStatus" [articles]="vm.articles" (toggleFavorite)="toggleFavorite($event)"></th-article-list>
       </div>
     </div>
     <th-tags [status]="vm.tagStatus" [tags]="vm.tags" class="w-[300px]">

@@ -1,8 +1,8 @@
-import { ApiStatus, Article, TagsResponse } from '../shared/data-access';
+import { ApiStatus, IArticle, ITagsResponse } from '../shared/data-access';
 
 export interface IHomeState {
-  articles: Article[];
-  tags: TagsResponse['tags'];
+  articles: IArticle[];
+  tags: ITagsResponse['tags'];
   selectedTag: string;
   feedType: 'global' | 'feed';
   statuses: Record<string, ApiStatus>;

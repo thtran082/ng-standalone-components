@@ -6,6 +6,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { provideComponentStore } from '@ngrx/component-store';
+import { IArticle } from 'src/app/shared/data-access';
 import { HomeStore } from './home.store';
 import {
   HomeUiArticleListComponent,
@@ -39,4 +40,8 @@ export class HomeComponent implements OnInit {
   constructor(private _homeStore: HomeStore) {}
 
   ngOnInit(): void {}
+
+  toggleFavorite(article: IArticle) {
+    this._homeStore.toggleFavorite(article);
+  }
 }

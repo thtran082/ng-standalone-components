@@ -1,17 +1,25 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   ComponentStore,
   OnStateInit,
   tapResponse
 } from '@ngrx/component-store';
-import { filter, MonoTypeOperatorFunction, pipe, switchMap, tap } from 'rxjs';
+import {
+  filter,
+  iif, MonoTypeOperatorFunction,
+  of,
+  pipe,
+  switchMap,
+  tap
+} from 'rxjs';
 import {
   ApiClient,
   ApiStatus,
   AuthStore,
-  MultipleArticlesResponse
+  IMultipleArticlesResponse
 } from '../shared/data-access';
-import { Article } from './../shared/data-access/model';
+import { IArticle } from './../shared/data-access/model';
 import { IHomeState } from './home.state';
 
 const initialHomeState: IHomeState = {
@@ -69,7 +77,7 @@ export class HomeStore
       })
     )
   );
-  private readonly _setArticles = this.updater<Article[]>((state, value) => ({
+  private readonly _setArticles = this.updater<IArticle[]>((state, value) => ({
     ...state,
     articles: [...state.articles, ...value],
   }));
@@ -102,7 +110,11 @@ export class HomeStore
     )
   );
 
-  constructor(private _authStore: AuthStore, private _apiClient: ApiClient) {
+  constructor(
+    private _authStore: AuthStore,
+    private _apiClient: ApiClient,
+    private _router: Router
+  ) {
     super(initialHomeState);
   }
 
@@ -111,6 +123,42 @@ export class HomeStore
     this.getTags();
   }
 
+  readonly toggleFavorite = this.effect<IArticle>(
+    switchMap((article) => {
+      return this._authStore.isAuthenticated$.pipe(
+        switchMap((isAuthenticated) =>
+          iif(
+            () => isAuthenticated,
+            article.favorited
+              ? this._apiClient.unmarkArticleFavorite(article.slug)
+              : this._apiClient.markArticleFavorite(article.slug),
+             of(null)
+          ).pipe(
+            tapResponse(
+              (response) => {
+                if (response) {
+                  this.patchState(({ articles }) => ({
+                    articles: articles.map((item) => {
+                      if (item.slug === response.article.slug) {
+                        return response.article;
+                      }
+                      return item;
+                    }),
+                  }));
+                } else {
+                  void this._router.navigate(['/login']);
+                }
+              },
+              (error) => {
+                console.error('Error toggling favorite', error);
+              }
+            )
+          )
+        )
+      );
+    })
+  );
+
   private _getArticlesPreProcessing(feedType: 'global' | 'feed') {
     return tap<void>(() => {
       this._setStatus({ key: 'articles', status: 'loading' });
@@ -118,8 +166,8 @@ export class HomeStore
     });
   }
 
-  private _getArticlesPostProcessing(): MonoTypeOperatorFunction<MultipleArticlesResponse> {
-    return tapResponse<MultipleArticlesResponse, unknown>(
+  private _getArticlesPostProcessing(): MonoTypeOperatorFunction<IMultipleArticlesResponse> {
+    return tapResponse<IMultipleArticlesResponse, unknown>(
       (response) => {
         this._setArticles(response.articles);
         this._setStatus({ key: 'articles', status: 'success' });

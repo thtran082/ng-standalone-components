@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output
 } from '@angular/core';
-import { Article } from 'src/app/shared/data-access';
+import { IArticle } from 'src/app/shared/data-access';
 import { SharedUtilsFirstWord } from 'src/app/shared/utils';
 
 @Component({
@@ -47,11 +49,12 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
           </div>
         </div>
         <button
-          class="px-2 py-1 rounded border text-sm"
+          class="px-2 py-1 rounded border text-sm hover:bg-blue-600 hover:text-white duration-200"
           [ngClass]="{
             'bg-blue-600 text-white': article.favorited,
             'text-blue-600 border-blue-600 bg-white': !article.favorited
           }"
+          (click)="toggleFavorite.emit(article)"
         >
           <i class="ion-heart mr-1"></i>
           <span>{{ article.favoritesCount }}</span>
@@ -71,11 +74,11 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
         </a>
         <span>
           <ng-container *ngFor="let tag of article.tagList">
-            <a
-              class="px-2 py-1 rounded-full border border-gray-300 text-gray-400 mr-2 inline-block hover:!text-blue-600"
+            <span
+              class="px-2 py-1 rounded-full border border-gray-300 text-gray-400 mr-2 inline-block"
             >
               #{{ tag }}
-            </a>
+            </span>
           </ng-container>
         </span>
       </div>
@@ -88,7 +91,8 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeUiArticlePreviewComponent implements OnInit {
-  @Input() article?: Article;
+  @Input() article?: IArticle;
+  @Output() toggleFavorite = new EventEmitter<IArticle>();
 
   constructor() {}
 

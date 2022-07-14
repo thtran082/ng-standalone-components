@@ -34,17 +34,17 @@ export interface IComment {
   body: string;
   createdAt: Date;
   updatedAt: Date;
-  author: Profile;
+  author: IProfile;
 }
 
-export interface Profile {
+export interface IProfile {
   username: string;
   bio: string;
   image: string;
   following: boolean;
 }
 
-export interface Article {
+export interface IArticle {
   slug: string;
   title: string;
   description: string;
@@ -54,15 +54,15 @@ export interface Article {
   updatedAt: Date;
   favorited: boolean;
   favoritesCount: number;
-  author: Profile;
+  author: IProfile;
 }
 
-export interface TagsResponse {
-  tags: string[];
+export interface IArticleResponse {
+  article: IArticle;
 }
 
-export interface MultipleArticlesResponse {
-  articles: Article[];
+export interface IMultipleArticlesResponse {
+  articles: IArticle[];
   articlesCount: number;
 }
 

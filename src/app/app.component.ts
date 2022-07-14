@@ -26,17 +26,22 @@ export class AppComponent implements OnInit {
         { provide: BASE_URL, useValue: environment.baseUrl },
         provideAuthInterceptor,
         importProvidersFrom(
-          RouterModule.forRoot([
+          RouterModule.forRoot(
+            [
+              {
+                path: '',
+                loadComponent: () =>
+                  import('./layout/layout.component').then(
+                    (m) => m.LayoutComponent
+                  ),
+                loadChildren: () =>
+                  import('./layout/layout.routes').then((m) => m.routes),
+              },
+            ],
             {
-              path: '',
-              loadComponent: () =>
-                import('./layout/layout.component').then(
-                  (m) => m.LayoutComponent
-                ),
-              loadChildren: () =>
-                import('./layout/layout.routes').then((m) => m.routes),
-            },
-          ]),
+              useHash: true,
+            }
+          ),
           HttpClientModule
         ),
       ],
