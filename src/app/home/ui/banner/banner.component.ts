@@ -9,14 +9,7 @@ import { Component, OnInit } from '@angular/core';
     <div class="bg-blue-400 text-white gap-4 p-8 text-center">
       <h1 class="!text-5xl !font-extrabold text-shadow">NgConduit</h1>
       <p class="text-lg font-thin">
-        This project is written by Angular, forked from
-        <a
-          href="https://github.com/gothinkster/realworld"
-          class="font-extrabold text-shadow hover:text-blue-100"
-        >
-          Conduit
-          <i class="ion-link inline-block -rotate-45"></i>
-        </a>
+        Realworld Conduit clone, rewrite with Angular v14 beta standalone components
       </p>
     </div>
   `,
