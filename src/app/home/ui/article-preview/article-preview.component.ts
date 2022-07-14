@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { RouterModule } from "@angular/router";
 import { IArticle } from "src/app/shared/data-access";
 import { SharedUtilsFirstWord } from "src/app/shared/utils";
-import { RouterModule } from "@angular/router";
 
 const ANGULAR_MODULES = [CommonModule, RouterModule];
 const UTILS = [SharedUtilsFirstWord];
@@ -84,7 +84,7 @@ const UTILS = [SharedUtilsFirstWord];
     </div>
     <ng-template #noArticle>
       <div
-        class="font-source-sans-pro border-t border-black border-opacity-10 flex flex-col gap-2 py-6"
+        class="font-source-sans-pro border-t border-black border-opacity-10 py-6"
       >
         <ng-content></ng-content>
       </div>

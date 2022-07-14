@@ -1,13 +1,14 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, } from "@angular/core";
-import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators, } from "@angular/forms";
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { AuthLayoutComponent } from "../shared/ui";
+import { SharedUiLoadingComponent } from './../shared/ui/loading/loading.component';
 import { LoginStore } from "./login.store";
 
 const COMMON_MODULES = [CommonModule, ReactiveFormsModule, RouterModule];
 
-const COMPONENTS = [AuthLayoutComponent,];
+const COMPONENTS = [AuthLayoutComponent,SharedUiLoadingComponent];
 
 @Component({
   selector: 'th-login',
@@ -20,9 +21,6 @@ const COMPONENTS = [AuthLayoutComponent,];
   styles: [
     `
       input {
-        &[required]::placeholder {
-          content: '*';
-        }
         &:is(.ng-touched.ng-invalid) {
           border: 1px solid red !important;
 
@@ -40,6 +38,8 @@ export class LoginComponent implements OnInit {
     email: ['', [Validators.email, Validators.required]],
     password: ['', Validators.required],
   });
+
+  readonly vm$ = this._store.vm$;
 
   constructor(private _fb: FormBuilder, private _store: LoginStore) {}
 

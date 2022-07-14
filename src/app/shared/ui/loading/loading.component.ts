@@ -7,9 +7,9 @@ import { Component } from '@angular/core';
   imports: [CommonModule],
   template: `
     <div class="lds-ellipsis">
-      <div></div>
-      <div></div>
-      <div></div>
+      <div class="bg-current"></div>
+      <div class="bg-current"></div>
+      <div class="bg-current"></div>
     </div>
   `,
   styles: [
@@ -18,7 +18,7 @@ import { Component } from '@angular/core';
         @apply inline-block relative w-10 h-4;
       }
       .lds-ellipsis div {
-        @apply absolute top-[45%] -translate-y-1/2 w-2 h-2 rounded-full bg-white;
+        @apply absolute top-[45%] -translate-y-1/2 w-2 h-2 rounded-full;
         animation-timing-function: cubic-bezier(0, 1, 1, 0);
       }
       .lds-ellipsis div:nth-child(1) {
@@ -52,4 +52,5 @@ import { Component } from '@angular/core';
     `,
   ],
 })
-export class SharedUiLoadingComponent {}
+export class SharedUiLoadingComponent {
+}

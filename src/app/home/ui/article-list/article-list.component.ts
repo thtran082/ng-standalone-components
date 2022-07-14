@@ -7,12 +7,16 @@ import {
   Output
 } from '@angular/core';
 import { ApiStatus, IArticle } from 'src/app/shared/data-access';
+import { SharedUiLoadingComponent } from './../../../shared/ui/loading/loading.component';
 import { HomeUiArticlePreviewComponent } from './../article-preview/article-preview.component';
+
+const ANGULAR_MODULES = [CommonModule];
+const COMPONENTS = [HomeUiArticlePreviewComponent, SharedUiLoadingComponent];
 
 @Component({
   selector: 'th-article-list',
   standalone: true,
-  imports: [CommonModule, HomeUiArticlePreviewComponent],
+  imports: [ANGULAR_MODULES, COMPONENTS],
   template: `
     <ng-container *ngIf="status !== 'loading'; else loading">
       <ng-container *ngIf="articles.length > 0; else noArticle">
@@ -30,7 +34,10 @@ import { HomeUiArticlePreviewComponent } from './../article-preview/article-prev
     </ng-template>
 
     <ng-template #loading>
-      <th-article-preview> Loading Articles... </th-article-preview>
+      <th-article-preview>
+        <span>Loading articles</span>
+        <th-loading class="!text-blue-500"></th-loading>
+      </th-article-preview>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,6 +48,5 @@ export class HomeUiArticleListComponent {
 
   @Output() toggleFavorite = new EventEmitter<IArticle>();
 
-  ngOnChanges(): void {
-  }
+  ngOnChanges(): void {}
 }
