@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
-    ChangeDetectionStrategy,
-    Component,
-    EventEmitter,
-    Input,
-    Output
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
 } from '@angular/core';
 import { ApiStatus, IArticle } from 'src/app/shared/data-access';
 import { HomeUiArticlePreviewComponent } from './../article-preview/article-preview.component';
@@ -15,13 +15,19 @@ import { HomeUiArticlePreviewComponent } from './../article-preview/article-prev
   imports: [CommonModule, HomeUiArticlePreviewComponent],
   template: `
     <ng-container *ngIf="status !== 'loading'; else loading">
-      <th-article-preview
-        *ngFor="let article of articles"
-        [article]="article"
-        (toggleFavorite)="toggleFavorite.emit($event)"
-      >
-      </th-article-preview>
+      <ng-container *ngIf="articles.length > 0; else noArticle">
+        <th-article-preview
+          *ngFor="let article of articles"
+          [article]="article"
+          (toggleFavorite)="toggleFavorite.emit($event)"
+        >
+        </th-article-preview>
+      </ng-container>
     </ng-container>
+
+    <ng-template #noArticle>
+      <th-article-preview>No articles are here... yet.</th-article-preview>
+    </ng-template>
 
     <ng-template #loading>
       <th-article-preview> Loading Articles... </th-article-preview>
@@ -36,6 +42,5 @@ export class HomeUiArticleListComponent {
   @Output() toggleFavorite = new EventEmitter<IArticle>();
 
   ngOnChanges(): void {
-    console.log(this.articles);
   }
 }

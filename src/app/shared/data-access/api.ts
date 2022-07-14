@@ -35,8 +35,15 @@ export class ApiClient {
     return this._http.get<IUserResponse>(url);
   }
 
-  getArticlesFeed(): Observable<IMultipleArticlesResponse> {
+  getArticles(): Observable<IMultipleArticlesResponse> {
     const url = this._replaceUnionMark('/articles');
+    return this._http.get<IMultipleArticlesResponse>(url, {
+      headers: { Accept: 'application/json' },
+    });
+  }
+
+  getArticlesFeed(): Observable<IMultipleArticlesResponse> {
+    const url = this._replaceUnionMark('/articles/feed');
     return this._http.get<IMultipleArticlesResponse>(url, {
       headers: { Accept: 'application/json' },
     });

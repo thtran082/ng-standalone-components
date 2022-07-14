@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   Output
 } from '@angular/core';
 
@@ -40,11 +41,15 @@ import {
     </div>
   `,
 })
-export class HomeUiFeedToggleComponent {
+export class HomeUiFeedToggleComponent implements OnChanges {
   @Input() selectedTag?: string;
   @Input() feedType: 'global' | 'feed' = 'global';
   @Input() isFeedDisabled = false;
 
   @Output() selectGlobal = new EventEmitter();
   @Output() selectFeed = new EventEmitter();
+
+  ngOnChanges(): void {
+    console.log(this.feedType);
+  }
 }

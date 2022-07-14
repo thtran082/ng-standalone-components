@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewEncapsulation
+  Component, ViewEncapsulation
 } from '@angular/core';
 import { provideComponentStore } from '@ngrx/component-store';
 import { IArticle } from 'src/app/shared/data-access';
@@ -34,14 +32,20 @@ const COMPONENTS = [
   encapsulation: ViewEncapsulation.None,
   providers: [provideComponentStore(HomeStore)],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   readonly vm$ = this._homeStore.vm$;
 
   constructor(private _homeStore: HomeStore) {}
 
-  ngOnInit(): void {}
-
   toggleFavorite(article: IArticle) {
     this._homeStore.toggleFavorite(article);
+  }
+
+  selectFeed(): void {
+    this._homeStore.getArticles('feed');
+  }
+
+  selectGlobal(): void {
+    this._homeStore.getArticles('global');
   }
 }

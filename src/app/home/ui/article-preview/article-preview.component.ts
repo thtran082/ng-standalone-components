@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import {
-    ChangeDetectionStrategy,
-    Component,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
 } from '@angular/core';
 import { IArticle } from 'src/app/shared/data-access';
 import { SharedUtilsFirstWord } from 'src/app/shared/utils';
@@ -85,7 +85,11 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
     </div>
 
     <ng-template #noArticle>
-      <ng-content></ng-content>
+      <div
+        class="font-source-sans-pro border-t border-black border-opacity-10 flex flex-col gap-2 py-6"
+      >
+        <ng-content></ng-content>
+      </div>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

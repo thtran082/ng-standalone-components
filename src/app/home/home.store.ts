@@ -7,7 +7,9 @@ import {
 } from '@ngrx/component-store';
 import {
   filter,
-  iif, MonoTypeOperatorFunction,
+  iif,
+  map,
+  MonoTypeOperatorFunction,
   of,
   pipe,
   switchMap,
@@ -67,19 +69,20 @@ export class HomeStore
     })
   );
 
-  getArticles = this.effect<void>(
-    pipe(
-      this._getArticlesPreProcessing('global'),
-      switchMap(() => {
-        return this._apiClient
-          .getArticlesFeed()
-          .pipe(this._getArticlesPostProcessing());
-      })
-    )
+  getArticles = this.effect<IHomeState['feedType']>(
+    switchMap((feedType) => {
+      this._getArticlesPreProcessing(feedType);
+      return iif(
+        () => feedType === 'feed',
+        this._apiClient.getArticlesFeed(),
+        this._apiClient.getArticles()
+      ).pipe(this._getArticlesPostProcessing());
+    })
   );
+
   private readonly _setArticles = this.updater<IArticle[]>((state, value) => ({
     ...state,
-    articles: [...state.articles, ...value],
+    articles: [...value],
   }));
 
   private readonly _setStatus = this.updater<{
@@ -119,9 +122,21 @@ export class HomeStore
   }
 
   ngrxOnStateInit(): void {
-    this.getArticles();
     this.getTags();
+    this.getFeedType();
   }
+
+  readonly getFeedType = this.effect<void>(
+    pipe(
+      switchMap(() =>
+        this._authStore.isAuthenticated$.pipe(
+          map((isAuthenticated) => {
+            this.getArticles(isAuthenticated ? 'feed' : 'global');
+          })
+        )
+      )
+    )
+  );
 
   readonly toggleFavorite = this.effect<IArticle>(
     switchMap((article) => {
@@ -132,7 +147,7 @@ export class HomeStore
             article.favorited
               ? this._apiClient.unmarkArticleFavorite(article.slug)
               : this._apiClient.markArticleFavorite(article.slug),
-             of(null)
+            of(null)
           ).pipe(
             tapResponse(
               (response) => {
@@ -160,10 +175,8 @@ export class HomeStore
   );
 
   private _getArticlesPreProcessing(feedType: 'global' | 'feed') {
-    return tap<void>(() => {
-      this._setStatus({ key: 'articles', status: 'loading' });
-      this.patchState({ selectedTag: '', feedType });
-    });
+    this._setStatus({ key: 'articles', status: 'loading' });
+    this.patchState({ selectedTag: '', feedType });
   }
 
   private _getArticlesPostProcessing(): MonoTypeOperatorFunction<IMultipleArticlesResponse> {
