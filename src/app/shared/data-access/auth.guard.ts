@@ -1,7 +1,7 @@
-import { CanActivate, CanActivateChild, CanLoad, Router, UrlTree } from "@angular/router";
-import { AuthStore } from "./auth.store";
-import { map, Observable, take } from "rxjs";
 import { Injectable } from "@angular/core";
+import { CanActivate, CanActivateChild, CanLoad, Router, UrlTree } from "@angular/router";
+import { map, Observable, take } from "rxjs";
+import { AuthStore } from "./auth.store";
 
 @Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
@@ -9,6 +9,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
   }
 
   canActivate(): Observable<boolean | UrlTree> {
+    this._authStore.updateAngularTitle();
     return this._isAuthenticated();
   }
 

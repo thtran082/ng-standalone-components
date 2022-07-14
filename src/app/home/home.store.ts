@@ -34,14 +34,16 @@ export class HomeStore
 
   vm$ = this.select(
     this._authStore.isAuthenticated$,
+    this._authStore.auth$,
     this.select((s) => s.tags),
     this.select((s) => s.feedType),
     this.select((s) => s.articles),
     this.select((s) => s.selectedTag),
     this.articlesStatus$.pipe(filter((status) => status !== "idle")),
     this.tagsStatus$.pipe(filter((status) => status !== "idle")),
-    (isAuthenticated, tags, feedType, articles, selectedTag, articlesStatus, tagStatus) => ({
+    (isAuthenticated, auth, tags, feedType, articles, selectedTag, articlesStatus, tagStatus) => ({
       isAuthenticated,
+      auth,
       tags,
       feedType,
       articles,

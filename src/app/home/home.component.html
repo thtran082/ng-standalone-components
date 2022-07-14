@@ -1,5 +1,5 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <th-banner *ngIf="!vm.isAuthenticated"></th-banner>
+  <th-banner [user]="vm.auth.user"></th-banner>
   <div class="container mx-auto mt-4 px-4">
     <div class="flex flex-row gap-8">
       <div class="flex-1">

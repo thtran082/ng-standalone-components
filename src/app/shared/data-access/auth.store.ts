@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { defer, filter, of, switchMap, tap } from 'rxjs';
+import { defer, filter, map, of, switchMap, tap } from 'rxjs';
 import { ApiClient } from './api';
 import { IAuthState } from './auth.state';
 import { NG_CONDUIT_TOKEN, NG_CONDUIT_USER } from './constants';
@@ -36,7 +37,8 @@ export class AuthStore extends ComponentStore<IAuthState> {
   constructor(
     private _router: Router,
     private _apiClient: ApiClient,
-    private _localStorageService: LocalStorageService
+    private _localStorageService: LocalStorageService,
+    private _titleService: Title
   ) {
     super(initialAuthState);
   }
@@ -49,6 +51,20 @@ export class AuthStore extends ComponentStore<IAuthState> {
     this._refresh();
     void this._router.navigate(url);
   }
+
+  readonly updateAngularTitle = this.effect<void>(
+    switchMap(() =>
+      this.auth$.pipe(
+        map((auth) => {
+          if (auth.user?.username) {
+            this._titleService.setTitle(`@${auth.user.username} - NgConduit`);
+          } else {
+            this._titleService.setTitle('NgConduit');
+          }
+        })
+      )
+    )
+  );
 
   readonly logout = this.effect<void>(
     tap(() => {

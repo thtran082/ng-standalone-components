@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, CanLoad, Router, UrlTree } from "@angular/router";
-import { AuthStore } from "./auth.store";
 import { map, Observable, take } from "rxjs";
+import { AuthStore } from "./auth.store";
 
 @Injectable({ providedIn: "root" })
 export class NonAuthGuard implements CanActivate, CanLoad {
@@ -9,6 +9,7 @@ export class NonAuthGuard implements CanActivate, CanLoad {
   }
 
   canActivate(): Observable<boolean | UrlTree> {
+    this._authStore.updateAngularTitle();
     return this._isAuthenticated$();
   }
 
