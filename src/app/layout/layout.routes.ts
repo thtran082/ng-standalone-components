@@ -36,6 +36,13 @@ export const routes: Routes = [
       import('../setting/setting.component').then((m) => m.SettingComponent),
   },
   {
+    path: 'article/:slug',
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
+    loadComponent: () =>
+      import('../article/article.component').then((m) => m.ArticleComponent),
+  },
+  {
     path: '**',
     redirectTo: '/not-found',
     pathMatch: 'full',
