@@ -66,6 +66,10 @@ export interface IMultipleArticlesResponse {
   articlesCount: number;
 }
 
+export interface IMultipleCommentResponse {
+  comments: IComment[];
+}
+
 export interface IArticleRequest {
   title: string;
   description: string;

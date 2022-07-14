@@ -1,15 +1,16 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { map, Observable } from "rxjs";
 import {
   IArticleRequest,
   IArticleResponse,
   IMultipleArticlesResponse,
+  IMultipleCommentResponse,
   ITagsResponse,
   IUserLogin,
   IUserResponse,
   IUserSignUp
-} from './model';
+} from "./model";
 
 @Injectable({ providedIn: 'root' })
 export class ApiClient {
@@ -36,11 +37,22 @@ export class ApiClient {
     return this._http.get<IUserResponse>(url);
   }
 
-  getArticles(): Observable<IMultipleArticlesResponse> {
-    const url = this._replaceUnionMark('/articles');
+  getArticles(param?: { tag?: string }): Observable<IMultipleArticlesResponse> {
+    const url =
+      this._replaceUnionMark('/articles') + (param?.tag ? `?tag=${param?.tag}` : '');
     return this._http.get<IMultipleArticlesResponse>(url, {
       headers: { Accept: 'application/json' },
     });
+  }
+
+  getArticle(slug: string): Observable<IArticleResponse> {
+    const url = this._replaceUnionMark(`/articles/${slug}`);
+    return this._http.get<IArticleResponse>(url);
+  }
+
+  getArticleComments(slug: string): Observable<IMultipleCommentResponse> {
+    const url = this._replaceUnionMark(`/articles/${slug}/comments`);
+    return this._http.get<IMultipleCommentResponse>(url);
   }
 
   getArticlesFeed(): Observable<IMultipleArticlesResponse> {

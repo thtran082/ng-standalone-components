@@ -1,7 +1,7 @@
-import { ApiStatus, IArticle } from './../shared/data-access/model';
+import { ApiStatus, IArticle, IComment } from "../shared/data-access";
 
 export interface IArticleState {
     status: ApiStatus;
-    comments: Comment[];
+    comments: IComment[];
     article: IArticle | null;
 }

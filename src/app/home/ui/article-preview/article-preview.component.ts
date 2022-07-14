@@ -1,19 +1,16 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
-import { IArticle } from 'src/app/shared/data-access';
-import { SharedUtilsFirstWord } from 'src/app/shared/utils';
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { IArticle } from "src/app/shared/data-access";
+import { SharedUtilsFirstWord } from "src/app/shared/utils";
+import { RouterModule } from "@angular/router";
+
+const ANGULAR_MODULES = [CommonModule, RouterModule];
+const UTILS = [SharedUtilsFirstWord];
 
 @Component({
   selector: 'th-article-preview',
   standalone: true,
-  imports: [CommonModule, SharedUtilsFirstWord],
+  imports: [ANGULAR_MODULES, UTILS],
   template: `
     <div
       *ngIf="article; else noArticle"
@@ -26,6 +23,7 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
               [src]="article.author.image"
               class="rounded-full h-8 w-8"
               alt="no image"
+              [routerLink]="'article/' + article.slug"
             />
           </ng-container>
           <ng-template #noAvatar>
@@ -39,7 +37,8 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
           </ng-template>
           <div class="flex flex-col">
             <span
-              class="text-blue-600 text-base font-semibold font-source-sans-pro"
+              class="text-blue-600 text-base font-semibold font-source-sans-pro hover:underline"
+              [routerLink]="'article/' + article.slug"
             >
               {{ article.author.username }}
             </span>
@@ -49,10 +48,10 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
           </div>
         </div>
         <button
-          class="px-2 py-1 rounded border text-sm hover:bg-blue-600 hover:text-white duration-200"
+          class="px-2 py-0 h-8 rounded border text-sm hover:bg-pink-600 hover:text-white duration-200"
           [ngClass]="{
-            'bg-blue-600 text-white': article.favorited,
-            'text-blue-600 border-blue-600 bg-white': !article.favorited
+            'bg-pink-600 text-white': article.favorited,
+            'text-pink-600 border-pink-600 bg-white': !article.favorited
           }"
           (click)="toggleFavorite.emit(article)"
         >
@@ -61,7 +60,7 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
         </button>
       </div>
 
-      <div class="flex flex-col gap-1">
+      <div class="flex flex-col gap-1" [routerLink]="'article/' + article.slug">
         <span class="text-2xl font-semibold">{{ article.title }}</span>
         <span class="text-base text-gray-400 font-light">
           {{ article.body }}
@@ -69,7 +68,7 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
       </div>
 
       <div class="flex flex-row justify-between items-end">
-        <a class="text-gray-400 font-light hover:!text-blue-600" href="">
+        <a class="text-gray-400 font-light hover:!text-blue-600 hover:underline" [routerLink]="'article/' + article.slug">
           Read more...
         </a>
         <span>
@@ -83,7 +82,6 @@ import { SharedUtilsFirstWord } from 'src/app/shared/utils';
         </span>
       </div>
     </div>
-
     <ng-template #noArticle>
       <div
         class="font-source-sans-pro border-t border-black border-opacity-10 flex flex-col gap-2 py-6"

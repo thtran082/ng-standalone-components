@@ -53,7 +53,7 @@ body {
 
 .active {
   @apply text-blue-500 font-bold;
-  
+
 }
 
 input, textarea {
@@ -83,4 +83,8 @@ a {
 *:disabled,
 *.disabled {
   @apply cursor-not-allowed select-none;
+}
+
+*[ng-reflect-router-link]:not(:disabled) {
+  @apply cursor-pointer;
 }

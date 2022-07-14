@@ -1,22 +1,24 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ArticleStore } from "./article.store";
+import { provideComponentStore } from "@ngrx/component-store";
+
+const ANGULAR_MODULES = [CommonModule]
 
 @Component({
   selector: 'th-article',
   standalone: true,
-  imports: [CommonModule],
+  imports: [ANGULAR_MODULES],
   template: `
-    <p>
-      article works!
-    </p>
+    <div class="container page lg:max-w-screen-lg mx-auto my-4">
+      hello
+    </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideComponentStore(ArticleStore)]
 })
-export class ArticleComponent implements OnInit {
+export class ArticleComponent {
+  readonly vm$ = this._articleStore.vm$;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  constructor(private _articleStore: ArticleStore) { }
 }

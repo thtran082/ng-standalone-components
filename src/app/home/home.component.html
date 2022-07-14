@@ -1,16 +1,18 @@
-<th-banner></th-banner>
-<div class="container mx-auto mt-4 px-4">
-  <div *ngIf="vm$ | async as vm" class="flex flex-row gap-8">
-    <div class="flex-1">
-      <div class="flex flex-col">
-        <th-feed-toggle [isFeedDisabled]="!vm.isAuthenticated" [feedType]="vm.feedType" (selectFeed)="selectFeed()"
-          (selectGlobal)="selectGlobal()"></th-feed-toggle>
-        <th-article-list [status]="vm.articlesStatus" [articles]="vm.articles"
-          (toggleFavorite)="toggleFavorite($event)"></th-article-list>
+<ng-container *ngIf="vm$ | async as vm">
+  <th-banner *ngIf="!vm.isAuthenticated"></th-banner>
+  <div class="container mx-auto mt-4 px-4">
+    <div class="flex flex-row gap-8">
+      <div class="flex-1">
+        <div class="flex flex-col mb-14">
+          <th-feed-toggle (selectFeed)="selectFeed()" (selectGlobal)="selectGlobal()" [feedType]="vm.feedType"
+                          [isFeedDisabled]="!vm.isAuthenticated"  [selectedTag]="vm.selectedTag"></th-feed-toggle>
+          <th-article-list (toggleFavorite)="toggleFavorite($event)" [articles]="vm.articles"
+                           [status]="vm.articlesStatus"></th-article-list>
+        </div>
       </div>
+      <th-tags (selectedTag)="selectTag($event)" [status]="vm.tagStatus" [tags]="vm.tags" class="w-[300px]">
+        <span>loading...</span>
+      </th-tags>
     </div>
-    <th-tags [status]="vm.tagStatus" [tags]="vm.tags" class="w-[300px]">
-      <span>loading...</span>
-    </th-tags>
   </div>
-</div>
+</ng-container>

@@ -1,15 +1,8 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output
-} from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
 @Component({
-  selector: 'th-feed-toggle',
+  selector: "th-feed-toggle",
   standalone: true,
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,22 +13,32 @@ import {
           <a
             class="block px-4 py-2 border-b-2 border-b-transparent"
             [ngClass]="{
-              'active !border-b-blue-400': feedType === 'feed',
+              'active !border-b-blue-400': feedType === 'feed' && !selectedTag,
               'disabled': isFeedDisabled
             }"
             (click)="!isFeedDisabled && selectFeed.emit()"
-            >your feed</a
           >
+            your feed
+          </a>
         </li>
-        <li class="float-left capitalize">
+        <li class="float-left capitalize text-slate-400">
           <a
             class="block px-4 py-2 border-b-2 border-b-transparent"
             [ngClass]="{
-              'active !border-b-blue-400': feedType === 'global'
+              'active !border-b-blue-400': feedType === 'global' && !selectedTag
             }"
             (click)="selectGlobal.emit()"
-            >global feed</a
           >
+            global feed
+          </a>
+        </li>
+        <li *ngIf="selectedTag" class="float-left">
+          <a
+            class="block px-4 py-2 border-b-2 border-b-transparent active !border-b-blue-400"
+            (click)="selectGlobal.emit()"
+          >
+            #{{selectedTag}}
+          </a>
         </li>
       </ul>
     </div>
@@ -43,7 +46,7 @@ import {
 })
 export class HomeUiFeedToggleComponent implements OnChanges {
   @Input() selectedTag?: string;
-  @Input() feedType: 'global' | 'feed' = 'global';
+  @Input() feedType: "global" | "feed" = "global";
   @Input() isFeedDisabled = false;
 
   @Output() selectGlobal = new EventEmitter();
