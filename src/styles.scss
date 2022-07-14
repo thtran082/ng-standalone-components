@@ -39,7 +39,7 @@ $ng-standalone-components-theme: mat.define-light-theme((
 @import "./styles/index";
 
 body {
-  @apply h-full w-full absolute overflow-hidden box-border;
+  @apply h-full w-full absolute overflow-auto box-border;
 }
 
 html, body {
@@ -56,12 +56,14 @@ body {
   
 }
 
-input {
+input, textarea {
   @apply px-5 py-4 rounded border border-gray-400 focus:outline-blue-400;
 }
 
-button, input, select {
-  @apply disabled:cursor-not-allowed opacity-70;
+button, input, select, textarea {
+  &:disabled {
+    @apply disabled:cursor-not-allowed opacity-50;
+  }
 }
 
 button {

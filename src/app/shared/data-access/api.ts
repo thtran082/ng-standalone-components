@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import {
+  IArticleRequest,
   IArticleResponse,
   IMultipleArticlesResponse,
   ITagsResponse,
@@ -62,6 +63,12 @@ export class ApiClient {
   unmarkArticleFavorite(slug: string): Observable<IArticleResponse> {
     const url = this._replaceUnionMark(`/articles/${slug}/favorite`);
     return this._http.delete<IArticleResponse>(url);
+  }
+
+  createArticle(article: IArticleRequest): Observable<IArticleResponse> {
+    const url = this._replaceUnionMark(`/articles`);
+    const params = { article };
+    return this._http.post<IArticleResponse>(url, params);
   }
 
   private _replaceUnionMark = (value: string): string =>

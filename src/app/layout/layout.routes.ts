@@ -43,6 +43,13 @@ export const routes: Routes = [
       import('../article/article.component').then((m) => m.ArticleComponent),
   },
   {
+    path: 'new-article',
+    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
+    loadComponent: () =>
+      import('../new-article/new-article.component').then((m) => m.NewArticleComponent),
+  },
+  {
     path: '**',
     redirectTo: '/not-found',
     pathMatch: 'full',

@@ -66,6 +66,13 @@ export interface IMultipleArticlesResponse {
   articlesCount: number;
 }
 
+export interface IArticleRequest {
+  title: string;
+  description: string;
+  body: string;
+  tagList: string[];
+}
+
 export interface ITagsResponse {
   tags: string[];
 }
