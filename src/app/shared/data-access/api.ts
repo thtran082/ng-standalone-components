@@ -5,11 +5,9 @@ import {
   IArticleRequest,
   IArticleResponse,
   IMultipleArticlesResponse,
-  IMultipleCommentResponse,
-  ITagsResponse,
+  IMultipleCommentResponse, ITagsResponse,
   IUserLogin,
-  IUserResponse,
-  IUserSignUp
+  IUserResponse, IUserSettings, IUserSignUp
 } from "./model";
 
 @Injectable({ providedIn: 'root' })
@@ -81,6 +79,12 @@ export class ApiClient {
     const url = this._replaceUnionMark(`/articles`);
     const params = { article };
     return this._http.post<IArticleResponse>(url, params);
+  }
+
+  updateSetting(user: Partial<IUserSettings>): Observable<IUserResponse> {
+    const url = this._replaceUnionMark(`/user`);
+    const params = { user };
+    return this._http.put<IUserResponse>(url, params);
   }
 
   private _replaceUnionMark = (value: string): string =>

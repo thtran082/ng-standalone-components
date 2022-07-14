@@ -80,3 +80,11 @@ export interface IArticleRequest {
 export interface ITagsResponse {
   tags: string[];
 }
+
+export interface IUserSettings {
+  image: string;
+  username: string;
+  bio: string;
+  email: string;
+  token: string;
+}
