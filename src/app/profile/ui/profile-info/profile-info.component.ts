@@ -44,7 +44,7 @@ const COMPONENTS = [SharedUiLoadingComponent];
           </ng-container>
         </ng-container>
         <ng-template #loading>
-          <span class="text-gray-400 font-thin capitalize">one moment</span>
+          <span class="text-gray-400 font-thin text-sm">One moment</span>
           <th-loading></th-loading>
         </ng-template>
       </div>
