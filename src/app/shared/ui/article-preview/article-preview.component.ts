@@ -92,7 +92,7 @@ const UTILS = [SharedUtilsFirstWord];
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeUiArticlePreviewComponent implements OnInit {
+export class SharedUiArticlePreviewComponent implements OnInit {
   @Input() article?: IArticle;
   @Output() toggleFavorite = new EventEmitter<IArticle>();
 

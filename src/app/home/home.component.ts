@@ -1,23 +1,25 @@
-import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from "@angular/core";
-import { provideComponentStore } from "@ngrx/component-store";
-import { IArticle } from "src/app/shared/data-access";
-import { HomeStore } from "./home.store";
+import { CommonModule } from '@angular/common';
 import {
-  HomeUiArticleListComponent,
-  HomeUiArticlePreviewComponent,
+  ChangeDetectionStrategy,
+  Component,
+  ViewEncapsulation
+} from '@angular/core';
+import { provideComponentStore } from '@ngrx/component-store';
+import { IArticle } from 'src/app/shared/data-access';
+import { SharedUiArticleListComponent } from '../shared/ui';
+import { HomeStore } from './home.store';
+import {
   HomeUiBannerComponent,
   HomeUiFeedToggleComponent,
   HomeUiTagsComponent
-} from "./ui";
+} from './ui';
 
 const ANGULAR_MODULES = [CommonModule];
 const COMPONENTS = [
   HomeUiTagsComponent,
   HomeUiBannerComponent,
   HomeUiFeedToggleComponent,
-  HomeUiArticleListComponent,
-  HomeUiArticlePreviewComponent,
+  SharedUiArticleListComponent,
 ];
 
 @Component({
@@ -47,6 +49,6 @@ export class HomeComponent {
   }
 
   selectTag(tag: string) {
-  this._homeStore.getArticlesByTag(tag);
+    this._homeStore.getArticlesByTag(tag);
   }
 }

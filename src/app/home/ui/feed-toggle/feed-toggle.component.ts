@@ -1,8 +1,14 @@
-import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
+import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 
 @Component({
-  selector: "th-feed-toggle",
+  selector: 'th-feed-toggle',
   standalone: true,
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,7 +20,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
             class="block px-4 py-2 border-b-2 border-b-transparent"
             [ngClass]="{
               'active !border-b-blue-400': feedType === 'feed' && !selectedTag,
-              'disabled': isFeedDisabled
+              disabled: isFeedDisabled
             }"
             (click)="!isFeedDisabled && selectFeed.emit()"
           >
@@ -37,22 +43,18 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
             class="block px-4 py-2 border-b-2 border-b-transparent active !border-b-blue-400"
             (click)="selectGlobal.emit()"
           >
-            #{{selectedTag}}
+            #{{ selectedTag }}
           </a>
         </li>
       </ul>
     </div>
   `,
 })
-export class HomeUiFeedToggleComponent implements OnChanges {
+export class HomeUiFeedToggleComponent {
   @Input() selectedTag?: string;
-  @Input() feedType: "global" | "feed" = "global";
+  @Input() feedType: 'global' | 'feed' = 'global';
   @Input() isFeedDisabled = false;
 
   @Output() selectGlobal = new EventEmitter();
   @Output() selectFeed = new EventEmitter();
-
-  ngOnChanges(): void {
-    console.log(this.feedType);
-  }
 }

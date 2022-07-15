@@ -7,11 +7,11 @@ import {
   Output
 } from '@angular/core';
 import { ApiStatus, IArticle } from 'src/app/shared/data-access';
-import { SharedUiLoadingComponent } from './../../../shared/ui/loading/loading.component';
-import { HomeUiArticlePreviewComponent } from './../article-preview/article-preview.component';
+import { SharedUiArticlePreviewComponent } from '../article-preview/article-preview.component';
+import { SharedUiLoadingComponent } from '../loading/loading.component';
 
 const ANGULAR_MODULES = [CommonModule];
-const COMPONENTS = [HomeUiArticlePreviewComponent, SharedUiLoadingComponent];
+const COMPONENTS = [SharedUiArticlePreviewComponent, SharedUiLoadingComponent];
 
 @Component({
   selector: 'th-article-list',
@@ -42,7 +42,7 @@ const COMPONENTS = [HomeUiArticlePreviewComponent, SharedUiLoadingComponent];
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeUiArticleListComponent {
+export class SharedUiArticleListComponent {
   @Input() articles: IArticle[] = [];
   @Input() status!: ApiStatus;
 
