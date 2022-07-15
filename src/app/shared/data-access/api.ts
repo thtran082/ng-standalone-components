@@ -1,14 +1,18 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { map, Observable } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import {
   IArticleRequest,
   IArticleResponse,
   IMultipleArticlesResponse,
-  IMultipleCommentResponse, IProfileResponse, ITagsResponse,
+  IMultipleCommentResponse,
+  IProfileResponse,
+  ITagsResponse,
   IUserLogin,
-  IUserResponse, IUserSettings, IUserSignUp
-} from "./model";
+  IUserResponse,
+  IUserSettings,
+  IUserSignUp
+} from './model';
 
 @Injectable({ providedIn: 'root' })
 export class ApiClient {
@@ -35,9 +39,16 @@ export class ApiClient {
     return this._http.get<IUserResponse>(url);
   }
 
-  getArticles(param?: { tag?: string }): Observable<IMultipleArticlesResponse> {
+  getArticles(param?: {
+    tag?: string;
+    favorited?: string;
+    author?: string;
+  }): Observable<IMultipleArticlesResponse> {
     const url =
-      this._replaceUnionMark('/articles') + (param?.tag ? `?tag=${param?.tag}` : '');
+      this._replaceUnionMark('/articles') +
+      (param?.tag ? `?tag=${param?.tag}` : '') +
+      (param?.favorited ? `?favorited=${param?.favorited}` : '');
+      (param?.author ? `?author=${param?.author}` : '');
     return this._http.get<IMultipleArticlesResponse>(url, {
       headers: { Accept: 'application/json' },
     });

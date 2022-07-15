@@ -1,21 +1,35 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { ProfileArticleType } from './profile-article.model';
-import { PROFILE_ARTICLES_DI } from './profile-articles.di';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { provideComponentStore } from '@ngrx/component-store';
+import { SharedUiArticleListComponent } from 'src/app/shared/ui';
+import { IArticle } from './../../shared/data-access/model';
+import { ProfileArticlesStore } from './profile-articles.store';
+
+const ANGULAR_MODULES = [CommonModule];
+const COMPONENTS = [SharedUiArticleListComponent];
 
 @Component({
   selector: 'th-profile-articles',
   standalone: true,
-  imports: [CommonModule],
+  imports: [ANGULAR_MODULES, COMPONENTS],
   template: `
-    <p>
-      profile-articles works! {{articleType}}
-    </p>
+    <ng-container *ngIf="vm$ | async as vm">
+      <th-article-list
+        [articles]="vm.articles"
+        [status]="vm.status"
+        (toggleFavorite)="toggleFavorite($event)"
+      ></th-article-list>
+    </ng-container>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideComponentStore(ProfileArticlesStore)],
 })
 export class ProfileArticlesComponent {
+  constructor(private _profileArticleStore: ProfileArticlesStore) {}
 
-  constructor(@Inject(PROFILE_ARTICLES_DI) public articleType: ProfileArticleType) { }
+  readonly vm$ = this._profileArticleStore.vm$;
 
+  toggleFavorite(article: IArticle): void {
+    this._profileArticleStore.toggleFavorite(article);
+  }
 }

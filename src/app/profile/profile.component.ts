@@ -25,7 +25,7 @@ const COMPONENTS = [
         [status]="vm.status"
       ></th-profile-info>
       <div
-        class="container page lg:max-w-screen-lg mx-auto my-4 flex flex-col gap-4"
+        class="container page lg:max-w-screen-lg mx-auto my-4 flex flex-col"
       >
         <th-articles-toggle [username]="vm.profile?.username"></th-articles-toggle>
         <router-outlet></router-outlet>
