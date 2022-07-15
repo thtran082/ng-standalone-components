@@ -103,6 +103,11 @@ export class ApiClient {
     return this._http.get<IProfileResponse>(url);
   }
 
+  deleteArticle(slug: string): Observable<void> {
+    const url = this._replaceUnionMark(`/articles/${slug}`);
+    return this._http.delete<void>(url);
+  }
+
   private _replaceUnionMark = (value: string): string =>
     value.replace(/[?&]$/, '');
 }

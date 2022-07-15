@@ -1,51 +1,85 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ComponentStore, OnStateInit, tapResponse } from "@ngrx/component-store";
-import { filter, forkJoin, pipe, switchMap, tap } from "rxjs";
-import { IArticleState } from "./article.state";
-import { ApiClient } from "../shared/data-access";
+import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ComponentStore,
+  OnStateInit,
+  tapResponse
+} from '@ngrx/component-store';
+import { exhaustMap, filter, forkJoin, pipe, tap } from 'rxjs';
+import { ApiClient, IArticle } from '../shared/data-access';
+import { IArticleState } from './article.state';
 
 @Injectable()
-export class ArticleStore extends ComponentStore<IArticleState> implements OnStateInit {
+export class ArticleStore
+  extends ComponentStore<IArticleState>
+  implements OnStateInit
+{
   readonly article$ = this.select((s) => s.article);
   readonly comments$ = this.select((s) => s.comments);
-  readonly status$ = this.select((s) => s.status);
+  readonly statuses$ = this.select((s) => s.statuses);
   readonly slug$ = this.select(
     this._route.params,
-    (params) => params["slug"] as string
+    (params) => params['slug'] as string
   );
+  readonly articleStatus$ = this.select((s) => s.statuses.article);
+  readonly commentsStatus$ = this.select((s) => s.statuses.comments);
+  readonly deleteStatus$ = this.select((s) => s.statuses.delete);
+
   readonly vm$ = this.select(
     this.article$,
     this.comments$,
     this.slug$,
-    this.status$.pipe(filter((status) => status !== "idle")),
-    (articles, comments, slug, status) => ({
-      articles,
+    this.articleStatus$.pipe(
+      filter((articleStatus) => articleStatus !== 'idle')
+    ),
+    this.commentsStatus$.pipe(
+      filter((commentsStatus) => commentsStatus !== 'idle')
+    ),
+    this.select((s) => s.statuses.delete),
+    (article, comments, slug, articleStatus, commentsStatus, deleteStatus) => ({
+      article,
       comments,
       slug,
-      status,
+      articleStatus,
+      commentsStatus,
+      deleteStatus,
     })
   );
 
   readonly getArticle = this.effect<string>(
     pipe(
-      tap(() => this.patchState(({ status: "loading" }))),
-      switchMap(slug =>
+      tap(() =>
+        this.patchState({
+          statuses: { article: 'loading', comments: 'loading', delete: 'idle' },
+        })
+      ),
+      exhaustMap((slug) =>
         forkJoin([
           this._apiClient.getArticle(slug),
           this._apiClient.getArticleComments(slug),
         ]).pipe(
           tapResponse(
             ([{ article }, { comments }]) => {
-              this.patchState({
+              this.patchState((state) => ({
                 article,
                 comments,
-                status: "success"
-              })
+                statuses: {
+                  delete: 'idle',
+                  comments: 'success',
+                  article: 'success',
+                },
+              }));
             },
-            error => {
-              console.error("error getting article or comments", error);
-              this.patchState({ status: "error" });
+            (error) => {
+              console.error('error getting article or comments', error);
+              this.patchState((state) => ({
+                ...state,
+                statuses: {
+                  ...state.statuses,
+                  comments: 'error',
+                  article: 'error',
+                },
+              }));
             }
           )
         )
@@ -53,17 +87,40 @@ export class ArticleStore extends ComponentStore<IArticleState> implements OnSta
     )
   );
 
-  constructor(private _route: ActivatedRoute, private _apiClient: ApiClient) {
+  deleteArticle = this.effect<IArticle['slug']>(
+    exhaustMap((slug) =>
+      this._apiClient.deleteArticle(slug).pipe(
+        tapResponse(
+          (response) => {
+            void this._router.navigate(['/']);
+          },
+          (error) => {
+            console.error('error deleting the article', error);
+          }
+        )
+      )
+    )
+  );
+
+  constructor(
+    private _route: ActivatedRoute,
+    private _apiClient: ApiClient,
+    private _router: Router
+  ) {
     super(initialArticleState);
   }
 
   ngrxOnStateInit(): void {
-    this.getArticle(this.slug$)
+    this.getArticle(this.slug$);
   }
 }
 
 const initialArticleState: IArticleState = {
   article: null,
   comments: [],
-  status: "idle",
+  statuses: {
+    article: 'idle',
+    comments: 'idle',
+    delete: 'idle',
+  },
 };
