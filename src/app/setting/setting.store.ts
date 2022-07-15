@@ -21,7 +21,7 @@ export class SettingStore extends ComponentStore<ISettingState> {
       tap(() => this.patchState({ status: 'loading' })),
       switchMap((user) => {
         const { token, ...rest } = user;
-        return this._apiClient.updateSetting(rest).pipe(
+        return this._apiClient.updateSetting(token ? user : rest).pipe(
           tapResponse(
             () => {
               this.patchState({ status: 'success' });
