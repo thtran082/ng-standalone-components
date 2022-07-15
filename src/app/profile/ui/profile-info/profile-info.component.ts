@@ -5,10 +5,11 @@ import {
   Input,
   OnInit
 } from '@angular/core';
-import { ApiStatus, IProfile } from './../../../shared/data-access/model';
-import { SharedUiLoadingComponent } from './../../../shared/ui/loading/loading.component';
+import { RouterModule } from '@angular/router';
+import { ApiStatus, IProfile } from './../../../shared/data-access';
+import { SharedUiLoadingComponent } from './../../../shared/ui';
 
-const ANGULAR_MODULES = [CommonModule];
+const ANGULAR_MODULES = [CommonModule, RouterModule];
 const COMPONENTS = [SharedUiLoadingComponent];
 
 @Component({
@@ -36,7 +37,7 @@ const COMPONENTS = [SharedUiLoadingComponent];
               </span>
             </div>
             <div class="w-full flex justify-end">
-              <button secondary-outlined class="!py-1">
+              <button secondary-outlined class="!py-1" routerLink="/settings">
                 <i class="ion-gear-a mr-1"></i>
                 Edit profile
               </button>
