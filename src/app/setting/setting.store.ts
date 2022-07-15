@@ -25,7 +25,7 @@ export class SettingStore extends ComponentStore<ISettingState> {
           tapResponse(
             () => {
               this.patchState({ status: 'success' });
-              this._authStore.authenticate(['/profile']);
+              this._authStore.authenticate(['/profile', rest.username]);
             },
             (error) => {
               this.patchState({ status: 'error' });

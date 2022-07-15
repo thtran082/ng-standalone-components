@@ -18,6 +18,10 @@ export interface IProfile extends Omit<IUser, 'token' | 'email'> {
   following: boolean;
 }
 
+export interface IProfileResponse {
+  profile: IProfile;
+}
+
 export interface IUserLogin {
   email: string;
   password: string;

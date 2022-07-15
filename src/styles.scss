@@ -71,6 +71,12 @@ button {
   &[primary] {
     @apply bg-blue-600 text-white capitalize;
   }
+  &[secondary-outlined] {
+    @apply border border-gray-400 text-gray-400 bg-transparent;
+    &:hover:not(.disabled, .active) {
+      @apply bg-gray-400 text-white;
+    }
+  }
 }
 
 a {

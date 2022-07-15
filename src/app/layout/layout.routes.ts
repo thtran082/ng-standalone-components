@@ -22,7 +22,7 @@ export const routes: Routes = [
       import('../register/register.component').then((m) => m.RegisterComponent),
   },
   {
-    path: 'profile',
+    path: 'profile/:username',
     canActivate: [AuthGuard],
     canLoad: [AuthGuard],
     loadComponent: () =>

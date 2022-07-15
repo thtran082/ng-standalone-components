@@ -5,7 +5,7 @@ import {
   IArticleRequest,
   IArticleResponse,
   IMultipleArticlesResponse,
-  IMultipleCommentResponse, ITagsResponse,
+  IMultipleCommentResponse, IProfileResponse, ITagsResponse,
   IUserLogin,
   IUserResponse, IUserSettings, IUserSignUp
 } from "./model";
@@ -85,6 +85,11 @@ export class ApiClient {
     const url = this._replaceUnionMark(`/user`);
     const params = { user };
     return this._http.put<IUserResponse>(url, params);
+  }
+
+  getProfile(username: string): Observable<IProfileResponse> {
+    const url = this._replaceUnionMark('/profiles/' + username);
+    return this._http.get<IProfileResponse>(url);
   }
 
   private _replaceUnionMark = (value: string): string =>
