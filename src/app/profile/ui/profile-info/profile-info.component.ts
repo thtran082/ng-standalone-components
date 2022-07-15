@@ -17,7 +17,7 @@ const COMPONENTS = [SharedUiLoadingComponent];
   imports: [ANGULAR_MODULES, COMPONENTS],
   template: `
     <div class="pt-8 pb-4 bg-gray-100 text-center min-h-[17.125rem] flex items-center">
-      <div class="container mx-auto flex flex-col items-center justify-center gap-4">
+      <div class="container px-4 mx-auto flex flex-col items-center justify-center gap-4">
         <ng-container *ngIf="status !== 'loading'; else loading">
           <ng-container *ngIf="profile">
             <img

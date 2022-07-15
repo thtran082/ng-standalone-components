@@ -25,8 +25,9 @@ export const routes: Routes = [
     path: 'profile/:username',
     canActivate: [AuthGuard],
     canLoad: [AuthGuard],
-    loadComponent: () =>
-      import('../profile/profile.component').then((m) => m.ProfileComponent),
+    canActivateChild: [AuthGuard],
+    loadChildren: () =>
+      import('../profile/profile.routes').then((m) => m.ProfileRoutes),
   },
   {
     path: 'settings',
@@ -47,7 +48,9 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     canLoad: [AuthGuard],
     loadComponent: () =>
-      import('../new-article/new-article.component').then((m) => m.NewArticleComponent),
+      import('../new-article/new-article.component').then(
+        (m) => m.NewArticleComponent
+      ),
   },
   {
     path: '**',

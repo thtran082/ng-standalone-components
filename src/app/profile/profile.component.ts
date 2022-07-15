@@ -1,11 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { provideComponentStore } from '@ngrx/component-store';
 import { ProfileStore } from './profile.store';
-import { ProfileUiProfileInfoComponent } from './ui';
+import {
+  ProfileUiArticlesToggleComponent,
+  ProfileUiProfileInfoComponent
+} from './ui';
 
-const ANGULAR_MODULES = [CommonModule];
-const COMPONENTS = [ProfileUiProfileInfoComponent];
+const ANGULAR_MODULES = [CommonModule, RouterModule];
+const COMPONENTS = [
+  ProfileUiProfileInfoComponent,
+  ProfileUiArticlesToggleComponent,
+];
 
 @Component({
   selector: 'th-profile',
@@ -13,20 +20,24 @@ const COMPONENTS = [ProfileUiProfileInfoComponent];
   imports: [ANGULAR_MODULES, COMPONENTS],
   template: `
     <ng-container *ngIf="vm$ | async as vm">
-      <th-profile-info [profile]="vm.profile" [status]="vm.status"></th-profile-info>
-      <div class="container page lg:max-w-screen-lg mx-auto my-4 flex flex-col gap-4">
+      <th-profile-info
+        [profile]="vm.profile"
+        [status]="vm.status"
+      ></th-profile-info>
+      <div
+        class="container page lg:max-w-screen-lg mx-auto my-4 flex flex-col gap-4"
+      >
+        <th-articles-toggle [username]="vm.profile?.username"></th-articles-toggle>
+        <router-outlet></router-outlet>
       </div>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideComponentStore(ProfileStore)],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
   constructor(private _profileStore: ProfileStore) {}
 
   readonly vm$ = this._profileStore.vm$;
 
-  ngOnInit(): void {
-    console.log('init');
-  }
 }

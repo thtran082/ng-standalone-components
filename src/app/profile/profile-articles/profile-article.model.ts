@@ -1,0 +1,1 @@
+export type ProfileArticleType = 'all' | 'favorites';
