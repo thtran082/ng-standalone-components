@@ -38,7 +38,7 @@ const UTILS = [SharedUtilsFirstWord];
           <div class="flex flex-col">
             <span
               class="text-blue-600 text-base font-semibold font-source-sans-pro hover:underline"
-              [routerLink]="'/article/' + article.slug"
+              [routerLink]="'/profile/' + article.author.username"
             >
               {{ article.author.username }}
             </span>

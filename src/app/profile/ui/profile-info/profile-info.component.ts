@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
-  OnInit
+  Output
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ProfileStore } from '../../profile.store';
 import { ApiStatus, IProfile } from './../../../shared/data-access';
 import { SharedUiLoadingComponent } from './../../../shared/ui';
 
@@ -17,8 +19,12 @@ const COMPONENTS = [SharedUiLoadingComponent];
   standalone: true,
   imports: [ANGULAR_MODULES, COMPONENTS],
   template: `
-    <div class="pt-8 pb-4 bg-gray-100 text-center min-h-[17.125rem] flex items-center">
-      <div class="container px-4 mx-auto flex flex-col items-center justify-center gap-4">
+    <div
+      class="pt-8 pb-4 bg-gray-100 text-center min-h-[17.125rem] flex items-center"
+    >
+      <div
+        class="container mx-auto flex flex-col items-center justify-center gap-4  max-w-screen-lg"
+      >
         <ng-container *ngIf="status !== 'loading'; else loading">
           <ng-container *ngIf="profile">
             <img
@@ -37,10 +43,32 @@ const COMPONENTS = [SharedUiLoadingComponent];
               </span>
             </div>
             <div class="w-full flex justify-end">
-              <button secondary-outlined class="!py-1" routerLink="/settings">
-                <i class="ion-gear-a mr-1"></i>
-                Edit profile
-              </button>
+              <ng-container *ngIf="isMe; else followButton">
+                <button secondary-outlined class="!py-1" routerLink="/settings">
+                  <i class="ion-gear-a mr-1"></i>
+                  Edit profile
+                </button>
+              </ng-container>
+
+              <ng-template #followButton>
+                <ng-container *ngIf="profile.following; else doFollowing">
+                  <button danger class="!py-1" (click)="toggleFollow.emit()">
+                    <i class="ion-minus-round mr-1"></i>
+                    Unfollow {{ profile.username }}
+                  </button>
+                </ng-container>
+
+                <ng-template #doFollowing>
+                  <button
+                    danger-outlined
+                    class="!py-1"
+                    (click)="toggleFollow.emit()"
+                  >
+                    <i class="ion-plus-round mr-1"></i>
+                    Follow {{ profile.username }}
+                  </button>
+                </ng-template>
+              </ng-template>
             </div>
           </ng-container>
         </ng-container>
@@ -53,11 +81,12 @@ const COMPONENTS = [SharedUiLoadingComponent];
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileUiProfileInfoComponent implements OnInit {
+export class ProfileUiProfileInfoComponent {
   @Input() profile!: IProfile | null;
   @Input() status: ApiStatus = 'idle';
+  @Input() isMe: boolean = false;
 
-  constructor() {}
+  @Output() toggleFollow = new EventEmitter<void>();
 
-  ngOnInit(): void {}
+  constructor(private _profileStore: ProfileStore) {}
 }

@@ -25,7 +25,8 @@ const COMPONENTS = [SharedUiArticleListComponent];
   providers: [provideComponentStore(ProfileArticlesStore)],
 })
 export class ProfileArticlesComponent {
-  constructor(private _profileArticleStore: ProfileArticlesStore) {}
+  constructor(private _profileArticleStore: ProfileArticlesStore) {
+  }
 
   readonly vm$ = this._profileArticleStore.vm$;
 

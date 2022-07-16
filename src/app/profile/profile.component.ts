@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { provideComponentStore } from '@ngrx/component-store';
+import { IProfile } from './../shared/data-access/model';
 import { ProfileStore } from './profile.store';
 import {
   ProfileUiArticlesToggleComponent,
@@ -23,6 +24,8 @@ const COMPONENTS = [
       <th-profile-info
         [profile]="vm.profile"
         [status]="vm.status"
+        [isMe]="vm.isMe"
+        (toggleFollow)="toggleFollow(vm.profile)"
       ></th-profile-info>
       <div
         class="container page lg:max-w-screen-lg mx-auto my-4 flex flex-col"
@@ -40,4 +43,9 @@ export class ProfileComponent {
 
   readonly vm$ = this._profileStore.vm$;
 
+  toggleFollow(profile: IProfile | null): void {
+    if (profile) {
+      this._profileStore.toggleFollow(profile);
+    }
+  }
 }

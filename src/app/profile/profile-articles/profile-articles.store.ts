@@ -1,11 +1,18 @@
 import { Inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import {
   ComponentStore,
   OnStateInit,
   tapResponse
 } from '@ngrx/component-store';
-import { iif, of, pipe, switchMap, tap, withLatestFrom } from 'rxjs';
+import {
+  combineLatest,
+  exhaustMap,
+  iif,
+  of,
+  pipe,
+  switchMap, tap, withLatestFrom
+} from 'rxjs';
 import { AuthStore, IArticle } from 'src/app/shared/data-access';
 import { ApiClient } from './../../shared/data-access/api';
 import { ProfileArticleType } from './profile-article.model';
@@ -22,15 +29,22 @@ export class ProfileArticlesStore
     private _profileArticleType: ProfileArticleType,
     private _authStore: AuthStore,
     private _apiClient: ApiClient,
-    private _router: Router
+    private _router: Router,
+    private _route: ActivatedRoute
   ) {
     super(initialProfileArticlesState);
   }
 
+  readonly userProfile$ = this.select(
+    this._route.parent?.params || of(''),
+    (params) => (params as Params)['username'] || ''
+  );
+
   readonly vm$ = this.select(
     this.select((s) => s.articles),
     this.select((s) => s.status),
-    (articles, status) => ({ articles, status })
+    this.userProfile$,
+    (articles, status, userProfile) => ({ articles, status, userProfile })
   );
 
   ngrxOnStateInit(): void {
@@ -40,21 +54,27 @@ export class ProfileArticlesStore
   getArticles = this.effect<ProfileArticleType>(
     pipe(
       tap(() => this.patchState({ status: 'loading' })),
-      withLatestFrom(this._authStore.auth$),
-      switchMap(([type, { user }]) => {
-        let params: Record<string, string> = {};
-        params[type === 'favorites' ? 'favorited' : 'author'] =
-          user?.username || '';
-        return this._apiClient.getArticles(params).pipe(
-          tapResponse(
-            ({ articles }) => {
-              this.patchState({ status: 'success', articles });
-            },
-            (error) => {
-              console.error('error getting the profile articles', error);
-              this.patchState({ status: 'error' });
+      exhaustMap((type) => {
+        return combineLatest([this.userProfile$, this._authStore.auth$]).pipe(
+          exhaustMap(([userProfile, auth]) => {
+            let params: Record<string, string> = {};
+            if (type == 'favorites') {
+              params['favorited'] = userProfile || '';
+            } else {
+              params['author'] = userProfile || '';
             }
-          )
+            return this._apiClient.getArticles(params).pipe(
+              tapResponse(
+                ({ articles }) => {
+                  this.patchState({ status: 'success', articles });
+                },
+                (error) => {
+                  console.error('error getting the profile articles', error);
+                  this.patchState({ status: 'error' });
+                }
+              )
+            );
+          })
         );
       })
     )

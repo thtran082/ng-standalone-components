@@ -45,10 +45,10 @@ export class ApiClient {
     author?: string;
   }): Observable<IMultipleArticlesResponse> {
     const url =
-      this._replaceUnionMark('/articles') +
-      (param?.tag ? `?tag=${param?.tag}` : '') +
-      (param?.favorited ? `?favorited=${param?.favorited}` : '');
-      (param?.author ? `?author=${param?.author}` : '');
+    this._replaceUnionMark('/articles') +
+    (param?.tag ? `tag=${param?.tag}&` : '') +
+    (param?.favorited ? `favorited=${param?.favorited}&` : '') +
+    (param?.author ? `author=${param?.author}&` : '');
     return this._http.get<IMultipleArticlesResponse>(url, {
       headers: { Accept: 'application/json' },
     });
@@ -108,6 +108,17 @@ export class ApiClient {
     return this._http.delete<void>(url);
   }
 
+  followUser(username: string): Observable<IProfileResponse> {
+    const url = this._replaceUnionMark(`/profiles/${username}/follow`);
+    const params = {};
+    return this._http.post<IProfileResponse>(url, params);
+  }
+
+  unfollowUser(username: string): Observable<IProfileResponse> {
+    const url = this._replaceUnionMark(`/profiles/${username}/follow`);
+    return this._http.delete<IProfileResponse>(url);
+  }
+
   private _replaceUnionMark = (value: string): string =>
-    value.replace(/[?&]$/, '');
+    value.replace(/[?&]$/, '') + '?';
 }
