@@ -6,32 +6,44 @@ import {
   OnInit
 } from '@angular/core';
 import { IArticle } from 'src/app/shared/data-access';
+import { ApiStatus } from 'src/app/shared/data-access/model';
+import { SharedUiSkeletonLoadingDirective } from 'src/app/shared/ui';
 import { SharedUtilsFirstWord } from 'src/app/shared/utils';
-import { ApiStatus } from './../../../shared/data-access/model';
 import { ArticleStore } from './../../article.store';
 
 const ANGULAR_MODULES = [CommonModule];
 const UTILS = [SharedUtilsFirstWord];
+const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
 
 @Component({
   selector: 'th-article-actions',
   standalone: true,
-  imports: [ANGULAR_MODULES, UTILS],
+  imports: [ANGULAR_MODULES, UTILS, DIRECTIVES],
   template: `
-    <div *ngIf="article" class="flex flex-row gap-6 items-center">
+    <div class="flex flex-row gap-6 items-center">
       <div class="flex flex-row items-center gap-2">
-        <ng-container *ngIf="status !== 'loading'; else loadingAvatar">
-          <img
-            [src]="article?.author?.image"
-            class="rounded-full h-8 w-8"
-            alt="no image"
-          />
-        </ng-container>
-        <div class="flex flex-col">
-          <span class="text-base leading-4 font-semibold font-source-sans-pro">
+        <img
+          thSkeletonLoading
+          [isLoaded]="status !== 'loading'"
+          [source]="article?.author?.image"
+          class="rounded-full h-8 w-8"
+          alt=""
+        />
+        <div class="flex flex-col min-w-[6rem]">
+          <span
+            thSkeletonLoading
+            [isLoaded]="status !== 'loading'"
+            class="text-base leading-4 font-semibold font-source-sans-pro"
+            [ngClass]="{ 'h-4 w-16 bg-gray-300': status === 'loading' }"
+          >
             {{ article?.author?.username }}
           </span>
-          <span class="text-gray-300 text-xs leading-4">
+          <span
+            thSkeletonLoading
+            [isLoaded]="status !== 'loading'"
+            class="text-gray-300 text-xs leading-4"
+            [ngClass]="{ 'h-4 w-24 mt-0.5 bg-gray-300': status === 'loading' }"
+          >
             {{ article?.updatedAt | date: 'mediumDate' }}
           </span>
         </div>
@@ -47,10 +59,6 @@ const UTILS = [SharedUtilsFirstWord];
         </button>
       </div>
     </div>
-
-    <ng-template #loadingAvatar>
-      <div class="h-8 w-8 bg-gray-300 text-white relative rounded-full"></div>
-    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

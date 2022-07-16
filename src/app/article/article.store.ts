@@ -5,7 +5,7 @@ import {
   OnStateInit,
   tapResponse
 } from '@ngrx/component-store';
-import { exhaustMap, filter, forkJoin, pipe, tap } from 'rxjs';
+import { delay, exhaustMap, filter, forkJoin, pipe, tap } from 'rxjs';
 import { ApiClient, IArticle } from '../shared/data-access';
 import { IArticleState } from './article.state';
 
@@ -53,6 +53,8 @@ export class ArticleStore
           statuses: { article: 'loading', comments: 'loading', delete: 'idle' },
         })
       ),
+      // take more times to displaying the skeleton loader
+      delay(500),
       exhaustMap((slug) =>
         forkJoin([
           this._apiClient.getArticle(slug),
