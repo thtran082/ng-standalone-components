@@ -23,7 +23,7 @@ const UTILS = [SharedUtilsFirstWord];
               [src]="article.author.image"
               class="rounded-full h-8 w-8"
               alt="no image"
-              [routerLink]="'article/' + article.slug"
+              [routerLink]="'/article/' + article.slug"
             />
           </ng-container>
           <ng-template #noAvatar>
@@ -38,7 +38,7 @@ const UTILS = [SharedUtilsFirstWord];
           <div class="flex flex-col">
             <span
               class="text-blue-600 text-base font-semibold font-source-sans-pro hover:underline"
-              [routerLink]="'article/' + article.slug"
+              [routerLink]="'/article/' + article.slug"
             >
               {{ article.author.username }}
             </span>
@@ -60,7 +60,7 @@ const UTILS = [SharedUtilsFirstWord];
         </button>
       </div>
 
-      <div class="flex flex-col gap-1" [routerLink]="'article/' + article.slug">
+      <div class="flex flex-col gap-1" [routerLink]="'/article/' + article.slug">
         <span class="text-2xl font-semibold">{{ article.title }}</span>
         <span class="text-base text-gray-400 font-light">
           {{ article.body }}
@@ -68,7 +68,7 @@ const UTILS = [SharedUtilsFirstWord];
       </div>
 
       <div class="flex flex-row justify-between items-end">
-        <a class="text-gray-400 font-light hover:!text-blue-600 hover:underline" [routerLink]="'article/' + article.slug">
+        <a class="text-gray-400 font-light hover:!text-blue-600 hover:underline" [routerLink]="'/article/' + article.slug">
           Read more...
         </a>
         <span>

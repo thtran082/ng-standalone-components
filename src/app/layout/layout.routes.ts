@@ -38,8 +38,6 @@ export const routes: Routes = [
   },
   {
     path: 'article/:slug',
-    canActivate: [AuthGuard],
-    canLoad: [AuthGuard],
     loadComponent: () =>
       import('../article/article.component').then((m) => m.ArticleComponent),
   },
