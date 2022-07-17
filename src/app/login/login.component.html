@@ -21,7 +21,7 @@
         Required
       </span>
     </fieldset>
-    <button *ngIf="vm$ | async as vm" [disabled]="form.invalid" class="self-end" primary type="submit">
+    <button *ngIf="vm$ | async as vm" [disabled]="form.invalid" class="self-end primary" type="submit">
       <ng-container *ngIf="vm.status !== 'loading'; else loading">
         Sign In
       </ng-container>

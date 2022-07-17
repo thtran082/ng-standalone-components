@@ -44,7 +44,7 @@ const COMPONENTS = [SharedUiLoadingComponent];
             </div>
             <div class="w-full flex justify-end">
               <ng-container *ngIf="isMe; else followButton">
-                <button secondary-outlined class="!py-1" routerLink="/settings">
+                <button class="secondary-outlined !py-1" routerLink="/settings">
                   <i class="ion-gear-a mr-1"></i>
                   Edit profile
                 </button>
@@ -52,7 +52,7 @@ const COMPONENTS = [SharedUiLoadingComponent];
 
               <ng-template #followButton>
                 <ng-container *ngIf="profile.following; else doFollowing">
-                  <button danger class="!py-1" (click)="toggleFollow.emit()">
+                  <button class="danger !py-1" (click)="toggleFollow.emit()">
                     <i class="ion-minus-round mr-1"></i>
                     Unfollow {{ profile.username }}
                   </button>
@@ -60,8 +60,7 @@ const COMPONENTS = [SharedUiLoadingComponent];
 
                 <ng-template #doFollowing>
                   <button
-                    danger-outlined
-                    class="!py-1"
+                    class="danger-outlined !py-1"
                     (click)="toggleFollow.emit()"
                   >
                     <i class="ion-plus-round mr-1"></i>

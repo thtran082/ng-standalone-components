@@ -63,7 +63,7 @@ const UTILS = [SharedUtilsFirstWord];
       <div class="flex flex-col gap-1" [routerLink]="'/article/' + article.slug">
         <span class="text-2xl font-semibold">{{ article.title }}</span>
         <span class="text-base text-gray-400 font-light">
-          {{ article.body }}
+          {{ article.description }}
         </span>
       </div>
 

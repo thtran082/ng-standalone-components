@@ -76,8 +76,7 @@ export interface IArticleFormData {
       </div>
       <button
         [disabled]="form.invalid"
-        class="float-right"
-        primary
+        class="float-right primary"
         type="button"
         (click)="onSubmit()"
       >

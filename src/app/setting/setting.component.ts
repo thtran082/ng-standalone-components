@@ -108,8 +108,7 @@ const COMPONENTS = [SharedUiLoadingComponent];
 
         <button
           [disabled]="form.invalid"
-          class="float-right font-titillium text-base"
-          primary
+          class="float-right font-titillium text-base primary"
           type="button"
           (click)="updateSettings()"
         >

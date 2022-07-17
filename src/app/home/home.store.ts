@@ -53,7 +53,7 @@ export class HomeStore
     })
   );
 
-  getArticles = this.effect<IHomeState["feedType"]>(
+  readonly getArticles = this.effect<IHomeState["feedType"]>(
     switchMap((feedType) => {
       this._getArticlesPreProcessing(feedType);
       return iif(
@@ -99,10 +99,12 @@ export class HomeStore
       );
     })
   );
+
   private readonly _setArticles = this.updater<IArticle[]>((state, value) => ({
     ...state,
     articles: [...value],
   }));
+
   private readonly _setStatus = this.updater<{
     key: string;
     status: ApiStatus;
@@ -110,7 +112,8 @@ export class HomeStore
     ...state,
     statuses: { ...state.statuses, [key]: status },
   }));
-  getArticlesByTag = this.effect<string>(
+
+  readonly getArticlesByTag = this.effect<string>(
     pipe(
       tap(tag => {
         this._setStatus({ key: "articles", status: "loading" });
@@ -120,7 +123,8 @@ export class HomeStore
         this._apiClient.getArticles({ tag }).pipe(this._getArticlesPostProcessing())
       )
     )
-  )
+  );
+  
   readonly getTags = this.effect<void>(
     pipe(
       tap(() => this._setStatus({ key: "tags", status: "loading" })),

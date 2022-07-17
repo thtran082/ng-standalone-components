@@ -30,6 +30,7 @@ const COMPONENTS = [
       <th-article-meta
         [article]="vm.article"
         [status]="vm.articleStatus"
+        [isOwner]="vm.isOwner"
       ></th-article-meta>
       <div class="container page lg:max-w-screen-lg mx-auto my-4">
         <ng-container
@@ -44,6 +45,7 @@ const COMPONENTS = [
             <th-article-actions
               [article]="vm.article"
               [status]="vm.articleStatus"
+              [isOwner]="vm.isOwner"
             ></th-article-actions>
           </div>
           <th-article-comments></th-article-comments>

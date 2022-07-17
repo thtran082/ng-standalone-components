@@ -40,6 +40,7 @@ const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
         <th-article-actions
           [article]="article"
           [status]="status"
+          [isOwner]="isOwner"
         ></th-article-actions>
       </div>
     </div>
@@ -49,6 +50,7 @@ const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
 export class ArticleUiArticleMetaComponent implements OnInit {
   @Input() article!: IArticle | null;
   @Input() status: ApiStatus = 'idle';
+  @Input() isOwner = false;
 
   constructor() {}
 

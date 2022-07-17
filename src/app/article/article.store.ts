@@ -5,8 +5,8 @@ import {
   OnStateInit,
   tapResponse
 } from '@ngrx/component-store';
-import { delay, exhaustMap, filter, forkJoin, pipe, tap } from 'rxjs';
-import { ApiClient, IArticle } from '../shared/data-access';
+import { delay, exhaustMap, filter, forkJoin, iif, pipe, tap } from 'rxjs';
+import { ApiClient, AuthStore, IArticle } from '../shared/data-access';
 import { IArticleState } from './article.state';
 
 @Injectable()
@@ -36,13 +36,24 @@ export class ArticleStore
       filter((commentsStatus) => commentsStatus !== 'idle')
     ),
     this.select((s) => s.statuses.delete),
-    (article, comments, slug, articleStatus, commentsStatus, deleteStatus) => ({
+    this._authStore.auth$,
+    (
       article,
       comments,
       slug,
       articleStatus,
       commentsStatus,
       deleteStatus,
+      auth
+    ) => ({
+      article,
+      comments,
+      slug,
+      articleStatus,
+      commentsStatus,
+      deleteStatus,
+      auth,
+      isOwner: auth?.user?.username === article?.author.username,
     })
   );
 
@@ -89,7 +100,7 @@ export class ArticleStore
     )
   );
 
-  deleteArticle = this.effect<IArticle['slug']>(
+  readonly deleteArticle = this.effect<IArticle['slug']>(
     exhaustMap((slug) =>
       this._apiClient.deleteArticle(slug).pipe(
         tapResponse(
@@ -104,10 +115,59 @@ export class ArticleStore
     )
   );
 
+  readonly toggleFavorite = this.effect<IArticle>(
+    pipe(
+      exhaustMap((article) =>
+        iif(
+          () => !article.favorited,
+          this._apiClient.markArticleFavorite(article.slug),
+          this._apiClient.unmarkArticleFavorite(article.slug)
+        ).pipe(
+          tapResponse(
+            (response) => {
+              this.patchState({ article: response.article });
+            },
+            (error) => {
+              console.error('error toggling favorite', error);
+            }
+          )
+        )
+      )
+    )
+  );
+
+  readonly toggleFollow = this.effect<IArticle>(
+    pipe(
+      exhaustMap((article) =>
+        iif(
+          () => !article.author.following,
+          this._apiClient.followUser(article.author.username),
+          this._apiClient.unfollowUser(article.author.username)
+        ).pipe(
+          tapResponse(
+            (response) => {
+              this.patchState((state) => ({
+                ...state,
+                article: {
+                  ...state.article!,
+                  author: response.profile,
+                }
+              }));
+            },
+            (error) => {
+              console.error('error toggling favorite', error);
+            }
+          )
+        )
+      )
+    )
+  );
+
   constructor(
     private _route: ActivatedRoute,
     private _apiClient: ApiClient,
-    private _router: Router
+    private _router: Router,
+    private _authStore: AuthStore
   ) {
     super(initialArticleState);
   }
