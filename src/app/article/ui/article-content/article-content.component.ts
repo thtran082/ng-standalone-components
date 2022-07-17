@@ -1,22 +1,52 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
+import { IArticle } from 'src/app/shared/data-access/model';
+import { SharedUiSanitizerPipe } from 'src/app/shared/ui/pipes';
+
+const ANGULAR_MODULES = [CommonModule];
+const PIPES = [SharedUiSanitizerPipe];
 
 @Component({
   selector: 'th-article-content',
   standalone: true,
-  imports: [CommonModule],
+  imports: [ANGULAR_MODULES, PIPES],
   template: `
-    <p>
-      article-content works!
-    </p>
+    <div id="page-article-content" class="my-6 ">
+      <div *ngIf="article?.body" [innerHTML]="article!.body | sanitizer"></div>
+      <div class="flex flex-row gap-1">
+        <ng-container *ngFor="let tag of article?.tagList">
+          <a
+            href=""
+            class="px-2 py-1 rounded-full border border-gray-400 text-gray-400 bg-white mr-2 mb-2 inline-block"
+          >
+            #{{ tag }}
+          </a>
+        </ng-container>
+      </div>
+    </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styles: [
+    `
+      #page-article-content {
+        a {
+          @apply text-green-500;
+        }
+      }
+    `,
+  ],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticleUiArticleContentComponent implements OnInit {
+  @Input() article: IArticle | null = null;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

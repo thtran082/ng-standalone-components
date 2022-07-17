@@ -8,7 +8,7 @@ import {
 import { IArticle } from 'src/app/shared/data-access';
 import { ApiStatus } from 'src/app/shared/data-access/model';
 import { SharedUiSkeletonLoadingDirective } from 'src/app/shared/ui';
-import { SharedUtilsFirstWord } from 'src/app/shared/utils';
+import { SharedUtilsFirstWord } from 'src/app/shared/ui/pipes';
 import { ArticleStore } from './../../article.store';
 
 const ANGULAR_MODULES = [CommonModule];

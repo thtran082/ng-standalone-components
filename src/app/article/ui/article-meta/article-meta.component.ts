@@ -20,7 +20,7 @@ const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
   imports: [ANGULAR_MODULES, COMPONENTS, DIRECTIVES],
   template: `
     <div class="py-8 bg-slate-700 text-white min-h-[11rem]">
-      <div class="container mx-auto px-4 flex flex-col gap-8">
+      <div class="container mx-auto flex flex-col gap-4 lg:max-w-screen-lg">
         <span
           thSkeletonLoading
           [isLoaded]="status !== 'loading'"
@@ -29,8 +29,18 @@ const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
         >
           {{ article?.title }}
         </span>
-        <th-article-actions [article]="article" [status]="status"></th-article-actions>
-
+        <span
+          thSkeletonLoading
+          [isLoaded]="status !== 'loading'"
+          class="text-sm italic font-thin font-source-sans-pro"
+          [ngClass]="{ 'h-5  w-1/3 bg-gray-300': status === 'loading' }"
+        >
+          {{ article?.description }}
+        </span>
+        <th-article-actions
+          [article]="article"
+          [status]="status"
+        ></th-article-actions>
       </div>
     </div>
   `,

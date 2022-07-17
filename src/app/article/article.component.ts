@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { provideComponentStore } from '@ngrx/component-store';
 import { tap } from 'rxjs';
+import { SharedUiLoadingComponent } from './../shared/ui/loading/loading.component';
 import { ArticleStore } from './article.store';
 import {
   ArticleUiArticleActionsComponent,
@@ -17,6 +18,7 @@ const COMPONENTS = [
   ArticleUiArticleActionsComponent,
   ArticleUiArticleCommentsComponent,
   ArticleUiArticleContentComponent,
+  SharedUiLoadingComponent,
 ];
 
 @Component({
@@ -25,14 +27,36 @@ const COMPONENTS = [
   imports: [ANGULAR_MODULES, COMPONENTS],
   template: `
     <ng-container *ngIf="vm$ | async as vm">
-      <th-article-meta [article]="vm.article" [status]="vm.articleStatus"></th-article-meta>
+      <th-article-meta
+        [article]="vm.article"
+        [status]="vm.articleStatus"
+      ></th-article-meta>
       <div class="container page lg:max-w-screen-lg mx-auto my-4">
-        <th-article-content></th-article-content>
-        <th-article-actions [article]="vm.article" [status]="vm.articleStatus"></th-article-actions>
-        <hr>
-        <th-article-comments></th-article-comments>
+        <ng-container
+          *ngIf="
+            vm.articleStatus !== 'loading' && vm.commentsStatus !== 'loading';
+            else loadingPage
+          "
+        >
+          <th-article-content [article]="vm.article"></th-article-content>
+          <hr />
+          <div class="mx-auto w-fit pt-6 pb-12">
+            <th-article-actions
+              [article]="vm.article"
+              [status]="vm.articleStatus"
+            ></th-article-actions>
+          </div>
+          <th-article-comments></th-article-comments>
+        </ng-container>
       </div>
     </ng-container>
+
+    <ng-template #loadingPage>
+      <div class="font-source-sans-pro py-6">
+        <span>Please wait</span>
+        <th-loading></th-loading>
+      </div>
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideComponentStore(ArticleStore)],
@@ -49,6 +73,5 @@ export class ArticleComponent {
   constructor(
     private _articleStore: ArticleStore,
     private _titleService: Title
-  ) {
-  }
+  ) {}
 }

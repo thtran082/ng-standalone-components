@@ -1,1 +1,1 @@
-export * from './first-word.pipe';
+export * from './string.util';

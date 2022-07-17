@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { IArticle } from "src/app/shared/data-access";
-import { SharedUtilsFirstWord } from "src/app/shared/utils";
+import { SharedUtilsFirstWord } from "../pipes";
 
 const ANGULAR_MODULES = [CommonModule, RouterModule];
 const UTILS = [SharedUtilsFirstWord];

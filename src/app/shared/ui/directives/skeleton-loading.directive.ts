@@ -1,10 +1,14 @@
-import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input, Renderer2
+} from '@angular/core';
 
 @Directive({
   selector: '[thSkeletonLoading]',
   standalone: true,
 })
-export class SharedUiSkeletonLoadingDirective implements OnChanges {
+export class SharedUiSkeletonLoadingDirective {
   private _initClasses = '';
 
   @Input() set isLoaded(isLoaded: boolean) {
@@ -49,8 +53,7 @@ export class SharedUiSkeletonLoadingDirective implements OnChanges {
   constructor(
     private _element: ElementRef<HTMLElement>,
     private _renderer2: Renderer2
-  ) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
+  ) {
+    this._initClasses = this._element.nativeElement.className;
   }
 }
