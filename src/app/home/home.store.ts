@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ComponentStore, OnStateInit, tapResponse } from "@ngrx/component-store";
-import { filter, iif, map, MonoTypeOperatorFunction, of, pipe, switchMap, tap } from "rxjs";
+import { filter, iif, MonoTypeOperatorFunction, of, pipe, switchMap, tap } from "rxjs";
 import { ApiClient, ApiStatus, AuthStore, IMultipleArticlesResponse } from "../shared/data-access";
 import { IArticle } from "./../shared/data-access/model";
 import { IHomeState } from "./home.state";
@@ -63,17 +63,7 @@ export class HomeStore
       ).pipe(this._getArticlesPostProcessing());
     })
   );
-  readonly getFeedType = this.effect<void>(
-    pipe(
-      switchMap(() =>
-        this._authStore.isAuthenticated$.pipe(
-          map((isAuthenticated) => {
-            this.getArticles(isAuthenticated ? "feed" : "global");
-          })
-        )
-      )
-    )
-  );
+
   readonly toggleFavorite = this.effect<IArticle>(
     switchMap((article) => {
       return this._authStore.isAuthenticated$.pipe(
@@ -161,7 +151,7 @@ export class HomeStore
 
   ngrxOnStateInit(): void {
     this.getTags();
-    this.getFeedType();
+    this.getArticles("global");
   }
 
   private _getArticlesPreProcessing(feedType: "global" | "feed") {
