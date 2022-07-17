@@ -22,7 +22,7 @@ const PIPES = [SharedUiSanitizerPipe];
       <div class="flex flex-row gap-1 mt-6">
         <ng-container *ngFor="let tag of article?.tagList">
           <span
-            class="px-2 py-1 rounded-md border border-gray-400 text-gray-400 bg-white mr-2 mb-2 inline-block"
+            class="px-2 py-1 rounded-md border border-gray-400 text-gray-400 bg-white mr-2 mb-2 inline-block text-sm italic"
           >
             <i class="ion-pricetag mr-1"></i>
             {{ tag }}
