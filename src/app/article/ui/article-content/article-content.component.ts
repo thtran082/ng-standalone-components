@@ -19,14 +19,13 @@ const PIPES = [SharedUiSanitizerPipe];
   template: `
     <div id="page-article-content" class="my-6 ">
       <div *ngIf="article?.body" [innerHTML]="article!.body | sanitizer"></div>
-      <div class="flex flex-row gap-1">
+      <div class="flex flex-row gap-1 mt-6">
         <ng-container *ngFor="let tag of article?.tagList">
-          <a
-            href=""
+          <span
             class="px-2 py-1 rounded-full border border-gray-400 text-gray-400 bg-white mr-2 mb-2 inline-block"
           >
             #{{ tag }}
-          </a>
+          </span>
         </ng-container>
       </div>
     </div>
@@ -35,7 +34,10 @@ const PIPES = [SharedUiSanitizerPipe];
     `
       #page-article-content {
         a {
-          @apply text-green-500;
+          @apply text-green-600;
+        }
+        p {
+          @apply leading-7 mb-4;
         }
       }
     `,
