@@ -1,15 +1,9 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { ProfileStore } from '../../profile.store';
-import { ApiStatus, IProfile } from './../../../shared/data-access';
-import { SharedUiLoadingComponent } from './../../../shared/ui';
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { ProfileStore } from "../../profile.store";
+import { ApiStatus, IProfile } from "./../../../shared/data-access";
+import { SharedUiLoadingComponent } from "../../../shared/ui";
 
 const ANGULAR_MODULES = [CommonModule, RouterModule];
 const COMPONENTS = [SharedUiLoadingComponent];
