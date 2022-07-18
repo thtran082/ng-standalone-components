@@ -1,25 +1,20 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ComponentStore,
-  OnStateInit,
-  tapResponse
-} from '@ngrx/component-store';
-import { delay, exhaustMap, filter, forkJoin, iif, pipe, tap } from 'rxjs';
-import { ApiClient, AuthStore, IArticle } from '../shared/data-access';
-import { IArticleState } from './article.state';
+import { Injectable } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ComponentStore, OnStateInit, tapResponse } from "@ngrx/component-store";
+import { delay, exhaustMap, filter, forkJoin, iif, of, pipe, tap, withLatestFrom } from "rxjs";
+import { ApiClient, AuthStore, IArticle } from "../shared/data-access";
+import { IArticleState } from "./article.state";
 
 @Injectable()
 export class ArticleStore
   extends ComponentStore<IArticleState>
-  implements OnStateInit
-{
+  implements OnStateInit {
   readonly article$ = this.select((s) => s.article);
   readonly comments$ = this.select((s) => s.comments);
   readonly statuses$ = this.select((s) => s.statuses);
   readonly slug$ = this.select(
     this._route.params,
-    (params) => params['slug'] as string
+    (params) => params["slug"] as string
   );
   readonly articleStatus$ = this.select((s) => s.statuses.article);
   readonly commentsStatus$ = this.select((s) => s.statuses.comments);
@@ -30,10 +25,10 @@ export class ArticleStore
     this.comments$,
     this.slug$,
     this.articleStatus$.pipe(
-      filter((articleStatus) => articleStatus !== 'idle')
+      filter((articleStatus) => articleStatus !== "idle")
     ),
     this.commentsStatus$.pipe(
-      filter((commentsStatus) => commentsStatus !== 'idle')
+      filter((commentsStatus) => commentsStatus !== "idle")
     ),
     this.select((s) => s.statuses.delete),
     this._authStore.auth$,
@@ -61,7 +56,7 @@ export class ArticleStore
     pipe(
       tap(() =>
         this.patchState({
-          statuses: { article: 'loading', comments: 'loading', delete: 'idle' },
+          statuses: { article: "loading", comments: "loading", delete: "idle" },
         })
       ),
       // take more times to displaying the skeleton loader
@@ -77,20 +72,20 @@ export class ArticleStore
                 article,
                 comments,
                 statuses: {
-                  delete: 'idle',
-                  comments: 'success',
-                  article: 'success',
+                  delete: "idle",
+                  comments: "success",
+                  article: "success",
                 },
               }));
             },
             (error) => {
-              console.error('error getting article or comments', error);
+              console.error("error getting article or comments", error);
               this.patchState((state) => ({
                 ...state,
                 statuses: {
                   ...state.statuses,
-                  comments: 'error',
-                  article: 'error',
+                  comments: "error",
+                  article: "error",
                 },
               }));
             }
@@ -100,15 +95,15 @@ export class ArticleStore
     )
   );
 
-  readonly deleteArticle = this.effect<IArticle['slug']>(
+  readonly deleteArticle = this.effect<IArticle["slug"]>(
     exhaustMap((slug) =>
       this._apiClient.deleteArticle(slug).pipe(
         tapResponse(
           (response) => {
-            void this._router.navigate(['/']);
+            void this._router.navigate(["/"]);
           },
           (error) => {
-            console.error('error deleting the article', error);
+            console.error("error deleting the article", error);
           }
         )
       )
@@ -117,18 +112,28 @@ export class ArticleStore
 
   readonly toggleFavorite = this.effect<IArticle>(
     pipe(
-      exhaustMap((article) =>
+      withLatestFrom(this._authStore.isAuthenticated$),
+      exhaustMap(([article, isAuthenticated]) =>
         iif(
-          () => !article.favorited,
-          this._apiClient.markArticleFavorite(article.slug),
-          this._apiClient.unmarkArticleFavorite(article.slug)
+          () => isAuthenticated,
+          !article.favorited ? this._apiClient.markArticleFavorite(article.slug) :
+            this._apiClient.unmarkArticleFavorite(article.slug),
+          of(null)
         ).pipe(
           tapResponse(
             (response) => {
-              this.patchState({ article: response.article });
+              if (response?.article) {
+                this.patchState({ article: response.article });
+              } else {
+                void this._router.navigate(["/login"], {
+                  queryParams: {
+                    redirect: `/article/${article.slug}`,
+                  },
+                })
+              }
             },
             (error) => {
-              console.error('error toggling favorite', error);
+              console.error("error toggling favorite", error);
             }
           )
         )
@@ -138,24 +143,35 @@ export class ArticleStore
 
   readonly toggleFollow = this.effect<IArticle>(
     pipe(
-      exhaustMap((article) =>
+      withLatestFrom(this._authStore.isAuthenticated$),
+      exhaustMap(([article, isAuthenticated]) =>
         iif(
-          () => !article.author.following,
-          this._apiClient.followUser(article.author.username),
-          this._apiClient.unfollowUser(article.author.username)
+          () => isAuthenticated,
+          !article.author.following ?
+            this._apiClient.followUser(article.author.username) :
+            this._apiClient.unfollowUser(article.author.username),
+          of(null)
         ).pipe(
           tapResponse(
             (response) => {
-              this.patchState((state) => ({
-                ...state,
-                article: {
-                  ...state.article!,
-                  author: response.profile,
-                }
-              }));
+              if (response?.profile) {
+                this.patchState((state) => ({
+                  ...state,
+                  article: {
+                    ...state.article!,
+                    author: response.profile,
+                  }
+                }));
+              } else {
+                void this._router.navigate(["/login"], {
+                  queryParams: {
+                    redirect: `/article/${article.slug}`
+                  }
+                })
+              }
             },
             (error) => {
-              console.error('error toggling favorite', error);
+              console.error("error toggling favorite", error);
             }
           )
         )
@@ -181,8 +197,8 @@ const initialArticleState: IArticleState = {
   article: null,
   comments: [],
   statuses: {
-    article: 'idle',
-    comments: 'idle',
-    delete: 'idle',
+    article: "idle",
+    comments: "idle",
+    delete: "idle",
   },
 };

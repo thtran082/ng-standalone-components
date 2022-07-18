@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { exhaustMap, pipe, tap } from 'rxjs';
+import { exhaustMap, pipe, tap, withLatestFrom } from 'rxjs';
 import {
   ApiClient,
   AuthStore,
   IUserLogin,
-  LocalStorageService,
   NG_CONDUIT_TOKEN,
   NG_CONDUIT_USER
 } from '../shared/data-access';
@@ -23,13 +23,18 @@ export class LoginStore extends ComponentStore<ILoginState> {
   });
   readonly status$ = this.select((s) => s.status);
 
-  readonly vm$ = this.select(this.status$, (status) => ({ status }));
+  readonly vm$ = this.select(
+    this.status$,
+    this._route.queryParamMap,
+    (status, params) => ({ status, params: params.get('redirect') })
+  );
 
   readonly login = this.effect<IUserLogin>(
     pipe(
       tap(() => this.patchState({ status: 'loading' })),
-      exhaustMap((req) =>
-        this._apiClient.login(req).pipe(
+      withLatestFrom(this._route.queryParamMap),
+      exhaustMap(([user, params]) =>
+        this._apiClient.login(user).pipe(
           tapResponse(
             (response) => {
               localStorage.setItem(NG_CONDUIT_TOKEN, response.user.token);
@@ -37,7 +42,7 @@ export class LoginStore extends ComponentStore<ILoginState> {
                 NG_CONDUIT_USER,
                 JSON.stringify(response.user)
               );
-              this._authStore.authenticate();
+              this._authStore.authenticate([decodeURIComponent(params.get('redirect') || '')]);
               this.patchState({ status: 'success' });
             },
             (error: ILoginState) => {
@@ -52,7 +57,7 @@ export class LoginStore extends ComponentStore<ILoginState> {
 
   constructor(
     private _authStore: AuthStore,
-    private _localStorageService: LocalStorageService,
+    private _route: ActivatedRoute,
     private _apiClient: ApiClient
   ) {
     super(initialLoginState);

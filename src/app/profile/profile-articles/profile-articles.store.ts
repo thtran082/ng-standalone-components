@@ -11,7 +11,9 @@ import {
   iif,
   of,
   pipe,
-  switchMap, tap, withLatestFrom
+  switchMap,
+  tap,
+  withLatestFrom
 } from 'rxjs';
 import { AuthStore, IArticle } from 'src/app/shared/data-access';
 import { ApiClient } from './../../shared/data-access/api';
@@ -105,7 +107,11 @@ export class ProfileArticlesStore
                   };
                 });
               } else {
-                void this._router.navigate(['/login']);
+                void this._router.navigate(['/login'], {
+                  queryParams: {
+                    redirect: `/profile/${article.author.username}`,
+                  },
+                });
               }
             },
             (error) => {

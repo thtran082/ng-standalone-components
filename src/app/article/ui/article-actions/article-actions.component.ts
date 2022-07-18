@@ -1,17 +1,13 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
-import { IArticle } from 'src/app/shared/data-access';
-import { ApiStatus } from 'src/app/shared/data-access/model';
-import { SharedUiSkeletonLoadingDirective } from 'src/app/shared/ui';
-import { SharedUtilsFirstWord } from 'src/app/shared/ui/pipes';
-import { ArticleStore } from './../../article.store';
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { IArticle } from "src/app/shared/data-access";
+import { ApiStatus } from "src/app/shared/data-access/model";
+import { SharedUiSkeletonLoadingDirective } from "src/app/shared/ui";
+import { SharedUtilsFirstWord } from "src/app/shared/ui/pipes";
+import { ArticleStore } from "../../article.store";
+import { RouterModule } from "@angular/router";
 
-const ANGULAR_MODULES = [CommonModule];
+const ANGULAR_MODULES = [CommonModule, RouterModule];
 const UTILS = [SharedUtilsFirstWord];
 const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
 
@@ -24,7 +20,7 @@ const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
       <div class="flex flex-row items-center gap-2">
         <img
           thSkeletonLoading
-          [isLoaded]="status !== 'loading'"
+          [isLoaded]="!isLoading"
           [source]="article?.author?.image"
           class="rounded-full h-8 w-8"
           alt=""
@@ -32,23 +28,24 @@ const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
         <div class="flex flex-col min-w-[6rem]">
           <span
             thSkeletonLoading
-            [isLoaded]="status !== 'loading'"
+            [isLoaded]="!isLoading"
             class="text-base leading-4 font-semibold font-source-sans-pro"
-            [ngClass]="{ 'h-4 w-16 bg-gray-300': status === 'loading' }"
+            [ngClass]="{ 'h-4 w-16 bg-gray-300': isLoading }"
+            [routerLink]="'/profile/' + article?.author?.username"
           >
             {{ article?.author?.username }}
           </span>
           <span
             thSkeletonLoading
-            [isLoaded]="status !== 'loading'"
+            [isLoaded]="!isLoading"
             class="text-gray-300 text-xs leading-4"
-            [ngClass]="{ 'h-4 w-24 mt-0.5 bg-gray-300': status === 'loading' }"
+            [ngClass]="{ 'h-4 w-24 mt-0.5 bg-gray-300': isLoading }"
           >
             {{ article?.updatedAt | date: 'mediumDate' }}
           </span>
         </div>
       </div>
-      <div class="flex flex-row gap-2 h-full">
+      <div *ngIf="!isLoading" class="flex flex-row gap-2 h-full">
         <ng-container *ngIf="isOwner; else notOwner">
           <button class="secondary-outlined !py-0.5 !px-2 text-sm">
             <i class="ion-edit mr-1"></i>
@@ -103,14 +100,16 @@ const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ArticleUiArticleActionsComponent implements OnInit {
+export class ArticleUiArticleActionsComponent {
   @Input() article!: IArticle | null;
   @Input() status: ApiStatus = 'idle';
   @Input() isOwner = false;
 
   constructor(private _articleStore: ArticleStore) {}
 
-  ngOnInit(): void {}
+  get isLoading() {
+    return this.status === 'loading';
+  }
 
   deleteArticle() {
     if (this.article?.slug) {

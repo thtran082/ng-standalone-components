@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ComponentStore,
   OnStateInit,
   tapResponse
 } from '@ngrx/component-store';
-import { exhaustMap, iif, pipe, switchMap, tap } from 'rxjs';
+import {
+  exhaustMap,
+  iif,
+  of,
+  pipe,
+  switchMap,
+  tap,
+  withLatestFrom
+} from 'rxjs';
 import { AuthStore, IProfile } from '../shared/data-access';
 import { ApiClient } from './../shared/data-access/api';
 import { IProfileState } from './profile.state';
@@ -18,6 +26,7 @@ export class ProfileStore
   constructor(
     private _apiClient: ApiClient,
     private _route: ActivatedRoute,
+    private _router: Router,
     private _authStore: AuthStore
   ) {
     super(initialProfileState);
@@ -64,15 +73,28 @@ export class ProfileStore
 
   readonly toggleFollow = this.effect<IProfile>(
     pipe(
-      exhaustMap((profile) =>
+      withLatestFrom(this._authStore.isAuthenticated$),
+      exhaustMap(([profile, isAuthenticated]) =>
         iif(
-          () => profile.following,
-          this._apiClient.unfollowUser(profile.username),
-          this._apiClient.followUser(profile.username)
+          () => isAuthenticated,
+          profile.following
+            ? this._apiClient.unfollowUser(profile.username)
+            : this._apiClient.followUser(profile.username),
+          of(null)
         ).pipe(
           tapResponse(
-            ({ profile }) => {
-              this.patchState({ profile });
+            (response) => {
+              if (response?.profile) {
+                this.patchState({ profile: response.profile });
+              } else {
+                void this._router.navigate(['/login'], {
+                  queryParams: {
+                    redirect: encodeURIComponent(
+                      '/profile/' + profile.username
+                    ),
+                  },
+                });
+              }
             },
             (error) => {
               console.error(
