@@ -1,11 +1,11 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { IUserSignUp } from "../shared/data-access";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RegisterStore } from "./register.store";
 import { provideComponentStore } from "@ngrx/component-store";
+import { RouterModule } from "@angular/router";
 
-const ANGULAR_MODULES = [CommonModule, ReactiveFormsModule];
+const ANGULAR_MODULES = [CommonModule, ReactiveFormsModule, RouterModule];
 const MODULES: any = [];
 
 
@@ -19,11 +19,13 @@ const MODULES: any = [];
 export class RegisterComponent {
   public formGroup: FormGroup;
 
+  readonly vm$ = this._registerStore.vm$;
+
   constructor(private _fb: FormBuilder, private _registerStore: RegisterStore) {
-    this.formGroup = this._fb.group<IUserSignUp>({
-      email: '',
-      password: '',
-      username: '',
+    this.formGroup = this._fb.nonNullable.group({
+      email: ["", [Validators.email, Validators.required]],
+      password: ["", Validators.required],
+      username: ["", Validators.required],
     });
   }
 

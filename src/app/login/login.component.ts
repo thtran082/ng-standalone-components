@@ -2,8 +2,7 @@ import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { AuthLayoutComponent } from "../shared/ui";
-import { SharedUiLoadingComponent } from './../shared/ui/loading/loading.component';
+import { AuthLayoutComponent, SharedUiLoadingComponent } from "../shared/ui";
 import { LoginStore } from "./login.store";
 
 const COMMON_MODULES = [CommonModule, ReactiveFormsModule, RouterModule];
@@ -18,20 +17,6 @@ const COMPONENTS = [AuthLayoutComponent,SharedUiLoadingComponent];
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: `./login.component.html`,
-  styles: [
-    `
-      input {
-        &:is(.ng-touched.ng-invalid) {
-          border: 1px solid red !important;
-
-          &::placeholder {
-            color: red !important;
-            font-weight: lighter;
-          }
-        }
-      }
-    `,
-  ],
 })
 export class LoginComponent implements OnInit {
   readonly form = this._fb.nonNullable.group({

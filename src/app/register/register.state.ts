@@ -1,3 +1,3 @@
 export interface IRegisterState {
-  error: Record<string, any>;
+  errors: Record<string, string[]>;
 }

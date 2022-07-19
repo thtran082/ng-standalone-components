@@ -1,19 +1,14 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { exhaustMap, pipe, tap, withLatestFrom } from 'rxjs';
-import {
-  ApiClient,
-  AuthStore,
-  IUserLogin,
-  NG_CONDUIT_TOKEN,
-  NG_CONDUIT_USER
-} from '../shared/data-access';
-import { ILoginState } from './login.state';
+import { Injectable } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { ComponentStore, tapResponse } from "@ngrx/component-store";
+import { exhaustMap, pipe, tap, withLatestFrom } from "rxjs";
+import { ApiClient, AuthStore, IUserLogin, NG_CONDUIT_TOKEN, NG_CONDUIT_USER } from "../shared/data-access";
+import { ILoginState } from "./login.state";
+import { HttpErrorResponse } from "@angular/common/http";
 
 const initialLoginState: ILoginState = {
   errors: {},
-  status: 'idle',
+  status: "idle",
 };
 
 @Injectable()
@@ -22,16 +17,18 @@ export class LoginStore extends ComponentStore<ILoginState> {
     debounce: true,
   });
   readonly status$ = this.select((s) => s.status);
+  readonly errors$ = this.select((s) => s.errors);
 
   readonly vm$ = this.select(
     this.status$,
     this._route.queryParamMap,
-    (status, params) => ({ status, params: params.get('redirect') })
+    this.errors$,
+    (status, params, errors) => ({ status, params: params.get("redirect"), errors })
   );
 
   readonly login = this.effect<IUserLogin>(
     pipe(
-      tap(() => this.patchState({ status: 'loading' })),
+      tap(() => this.patchState({ status: "loading" })),
       withLatestFrom(this._route.queryParamMap),
       exhaustMap(([user, params]) =>
         this._apiClient.login(user).pipe(
@@ -42,12 +39,12 @@ export class LoginStore extends ComponentStore<ILoginState> {
                 NG_CONDUIT_USER,
                 JSON.stringify(response.user)
               );
-              this._authStore.authenticate([decodeURIComponent(params.get('redirect') || '')]);
-              this.patchState({ status: 'success' });
+              this._authStore.authenticate([decodeURIComponent(params.get("redirect") || "")]);
+              this.patchState({ status: "success" });
             },
-            (error: ILoginState) => {
+            ({ error }: HttpErrorResponse) => {
               console.error('error login user', error);
-              this.patchState({ errors: error?.errors || {}, status: 'error' });
+              this.patchState({ errors: error?.errors || {}, status: "error" });
             }
           )
         )
