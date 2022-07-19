@@ -1,13 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { provideComponentStore } from '@ngrx/component-store';
-import { IProfile } from './../shared/data-access/model';
-import { ProfileStore } from './profile.store';
-import {
-  ProfileUiArticlesToggleComponent,
-  ProfileUiProfileInfoComponent
-} from './ui';
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { provideComponentStore } from "@ngrx/component-store";
+import { IProfile } from "./../shared/data-access/model";
+import { ProfileStore } from "./profile.store";
+import { ProfileUiArticlesToggleComponent, ProfileUiProfileInfoComponent } from "./ui";
 
 const ANGULAR_MODULES = [CommonModule, RouterModule];
 const COMPONENTS = [
@@ -39,9 +36,9 @@ const COMPONENTS = [
   providers: [provideComponentStore(ProfileStore)],
 })
 export class ProfileComponent {
-  constructor(private _profileStore: ProfileStore) {}
-
   readonly vm$ = this._profileStore.vm$;
+
+  constructor(private _profileStore: ProfileStore) {}
 
   toggleFollow(profile: IProfile | null): void {
     if (profile) {

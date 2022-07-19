@@ -4,6 +4,8 @@ export interface IHomeState {
   articles: IArticle[];
   tags: ITagsResponse['tags'];
   selectedTag: string;
-  feedType: 'global' | 'feed';
+  feedType: FeedType;
   statuses: Record<string, ApiStatus>;
 }
+
+export type FeedType = 'global' | 'feed';

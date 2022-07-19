@@ -4,7 +4,7 @@ import { ComponentStore, OnStateInit, tapResponse } from "@ngrx/component-store"
 import { filter, iif, MonoTypeOperatorFunction, of, pipe, switchMap, tap } from "rxjs";
 import { ApiClient, ApiStatus, AuthStore, IMultipleArticlesResponse } from "../shared/data-access";
 import { IArticle } from "./../shared/data-access/model";
-import { IHomeState } from "./home.state";
+import { FeedType, IHomeState } from "./home.state";
 
 const initialHomeState: IHomeState = {
   articles: [],
@@ -54,14 +54,17 @@ export class HomeStore
   );
 
   readonly getArticles = this.effect<IHomeState["feedType"]>(
-    switchMap((feedType) => {
-      this._getArticlesPreProcessing(feedType);
-      return iif(
-        () => feedType === "feed",
-        this._apiClient.getArticlesFeed(),
-        this._apiClient.getArticles()
-      ).pipe(this._getArticlesPostProcessing());
-    })
+    pipe(
+      this._getArticlesPreProcessing(),
+      switchMap((feedType) => {
+        this._getArticlesPreProcessing;
+        return iif(
+          () => feedType === "feed",
+          this._apiClient.getArticlesFeed(),
+          this._apiClient.getArticles()
+          ).pipe(this._getArticlesPostProcessing());
+        })
+    )
   );
 
   readonly toggleFavorite = this.effect<IArticle>(
@@ -158,9 +161,13 @@ export class HomeStore
     this.getArticles("global");
   }
 
-  private _getArticlesPreProcessing(feedType: "global" | "feed") {
-    this._setStatus({ key: "articles", status: "loading" });
-    this.patchState({ selectedTag: "", feedType });
+  private _getArticlesPreProcessing(): MonoTypeOperatorFunction<FeedType> {
+    return tap(
+      (feedType) => {
+        this._setStatus({ key: "articles", status: "loading" });
+        this.patchState({ selectedTag: "", feedType });
+      }
+    );
   }
 
   private _getArticlesPostProcessing(): MonoTypeOperatorFunction<IMultipleArticlesResponse> {
