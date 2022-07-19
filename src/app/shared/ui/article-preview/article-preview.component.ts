@@ -74,9 +74,10 @@ const UTILS = [SharedUtilsFirstWord];
         <span>
           <ng-container *ngFor="let tag of article.tagList">
             <span
-              class="px-2 py-1 rounded-full border border-gray-300 text-gray-400 mr-2 inline-block"
+              class="px-2 py-1 rounded-md border border-gray-300 text-gray-400 inline-block"
             >
-              #{{ tag }}
+              <i class="ion-pricetag mr-1"></i>
+              <span>{{ tag }}</span>
             </span>
           </ng-container>
         </span>
