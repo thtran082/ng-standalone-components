@@ -1,22 +1,17 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
-import { IUser } from './../../../shared/data-access/model';
+import { NgIf } from "@angular/common";
+import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
+import { IUser } from "../../../shared/data-access";
 
 @Component({
   selector: 'th-banner',
   standalone: true,
-  imports: [CommonModule],
+  imports: [NgIf],
   template: `
     <div class="bg-blue-400 text-white p-8 text-center flex flex-col gap-4">
       <ng-container *ngIf="user; else default">
         <img *ngIf="user.image" class="rounded-full mx-auto" width="100" height="100" [src]="user.image" alt="" />
         <span class="!text-5xl !font-extrabold text-shadow">
-          {{ user?.username ? 'Welcome, ' + user?.username : 'NgConduit' }}
+          {{ user.username ? 'Welcome, ' + user.username : 'NgConduit' }}
         </span>
       </ng-container>
       <span class="text-lg font-thin">

@@ -4,13 +4,13 @@ import { RouterModule } from "@angular/router";
 import { IArticle } from "src/app/shared/data-access";
 import { SharedUtilsFirstWord } from "../pipes";
 
-const ANGULAR_MODULES = [CommonModule, RouterModule];
+const COMMONS = [CommonModule, RouterModule];
 const UTILS = [SharedUtilsFirstWord];
 
 @Component({
   selector: 'th-article-preview',
   standalone: true,
-  imports: [ANGULAR_MODULES, UTILS],
+  imports: [COMMONS, UTILS],
   template: `
     <div
       *ngIf="article; else noArticle"

@@ -1,22 +1,16 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
-import { ApiStatus, IArticle } from 'src/app/shared/data-access';
-import { SharedUiArticlePreviewComponent } from '../article-preview/article-preview.component';
-import { SharedUiLoadingComponent } from '../loading/loading.component';
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { ApiStatus, IArticle } from "src/app/shared/data-access";
+import { SharedUiArticlePreviewComponent } from "../article-preview/article-preview.component";
+import { SharedUiLoadingComponent } from "../loading/loading.component";
 
-const ANGULAR_MODULES = [CommonModule];
+const COMMONS = [CommonModule];
 const COMPONENTS = [SharedUiArticlePreviewComponent, SharedUiLoadingComponent];
 
 @Component({
   selector: 'th-article-list',
   standalone: true,
-  imports: [ANGULAR_MODULES, COMPONENTS],
+  imports: [COMMONS, COMPONENTS],
   template: `
     <ng-container *ngIf="status !== 'loading'; else loading">
       <ng-container *ngIf="articles.length > 0; else noArticle">

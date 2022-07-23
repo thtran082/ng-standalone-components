@@ -1,18 +1,18 @@
-import { CommonModule } from "@angular/common";
+import { AsyncPipe, KeyValuePipe, NgForOf, NgIf } from "@angular/common";
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { AuthLayoutComponent, SharedUiLoadingComponent } from "../shared/ui";
 import { LoginStore } from "./login.store";
 
-const COMMON_MODULES = [CommonModule, ReactiveFormsModule, RouterModule];
+const COMMONS = [NgIf, AsyncPipe, ReactiveFormsModule, RouterModule, NgForOf, KeyValuePipe];
 
 const COMPONENTS = [AuthLayoutComponent,SharedUiLoadingComponent];
 
 @Component({
   selector: 'th-login',
   standalone: true,
-  imports: [COMMON_MODULES, COMPONENTS],
+  imports: [COMMONS, COMPONENTS],
   providers: [LoginStore],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

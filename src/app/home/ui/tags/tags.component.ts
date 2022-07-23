@@ -1,21 +1,14 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
-import { ApiStatus } from '../../../shared/data-access';
+import { NgForOf, NgIf } from "@angular/common";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ApiStatus } from "../../../shared/data-access";
 
 @Component({
   selector: 'th-tags',
   standalone: true,
-  imports: [CommonModule],
+  imports: [NgIf, NgForOf],
   template: `
     <p class="mb-4 uppercase font-bold font-sans text-gray-600 text-sm">
-      
+
       What topic do you highly interested to?
     </p>
     <div>

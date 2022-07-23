@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
 import {
   AbstractControl,
   FormBuilder,
@@ -7,20 +7,20 @@ import {
   ValidationErrors,
   ValidatorFn,
   Validators
-} from '@angular/forms';
-import { provideComponentStore } from '@ngrx/component-store';
-import { tap } from 'rxjs';
-import { SharedUiLoadingComponent } from '../shared/ui';
-import { IUserSettings } from './../shared/data-access/model';
-import { SettingStore } from './setting.store';
+} from "@angular/forms";
+import { provideComponentStore } from "@ngrx/component-store";
+import { tap } from "rxjs";
+import { SharedUiLoadingComponent } from "../shared/ui";
+import { IUserSettings } from "./../shared/data-access/model";
+import { SettingStore } from "./setting.store";
 
-const ANGULAR_MODULES = [CommonModule, ReactiveFormsModule];
+const COMMONS = [CommonModule, ReactiveFormsModule];
 const COMPONENTS = [SharedUiLoadingComponent];
 
 @Component({
   selector: 'th-setting',
   standalone: true,
-  imports: [ANGULAR_MODULES, COMPONENTS],
+  imports: [COMMONS, COMPONENTS],
   template: `
     <div
       class="container page lg:max-w-screen-lg mx-auto my-4 flex flex-col gap-4 font-titillium"
@@ -126,31 +126,6 @@ const COMPONENTS = [SharedUiLoadingComponent];
   providers: [provideComponentStore(SettingStore)],
 })
 export class SettingComponent {
-  checkPassword: ValidatorFn = (
-    group: AbstractControl
-  ): ValidationErrors | null => {
-    const password = group.get('token')?.value;
-    const confirmToken = group.get('confirmToken')?.value;
-    if (!password || (password && password === confirmToken)) return null;
-    return { notMatched: true };
-  };
-
-  readonly form = this._fb.group({
-    image: [''],
-    username: [''],
-    bio: [''],
-    email: ['', [Validators.email]],
-    password: this._fb.group(
-      {
-        token: ['', Validators.minLength(8)],
-        confirmToken: ['', Validators.minLength(8)],
-      },
-      {
-        validators: this.checkPassword,
-      }
-    ),
-  });
-
   readonly vm$ = this._settingStore.vm$.pipe(
     tap((vm) => {
       this.form.controls['email'].disable();
@@ -180,6 +155,31 @@ export class SettingComponent {
   get formValue() {
     return this.form.getRawValue();
   }
+
+  checkPassword: ValidatorFn = (
+    group: AbstractControl
+  ): ValidationErrors | null => {
+    const password = group.get('token')?.value;
+    const confirmToken = group.get('confirmToken')?.value;
+    if (!password || (password && password === confirmToken)) return null;
+    return { notMatched: true };
+  };
+
+  readonly form = this._fb.group({
+    image: [''],
+    username: [''],
+    bio: [''],
+    email: ['', [Validators.email]],
+    password: this._fb.group(
+      {
+        token: ['', Validators.minLength(8)],
+        confirmToken: ['', Validators.minLength(8)],
+      },
+      {
+        validators: this.checkPassword,
+      }
+    ),
+  });
 
   updateSettings(): void {
     const { token, confirmToken } = this.form.value.password!;

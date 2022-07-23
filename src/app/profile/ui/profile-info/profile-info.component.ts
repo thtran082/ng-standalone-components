@@ -5,13 +5,13 @@ import { ProfileStore } from "../../profile.store";
 import { ApiStatus, IProfile } from "./../../../shared/data-access";
 import { SharedUiLoadingComponent } from "../../../shared/ui";
 
-const ANGULAR_MODULES = [CommonModule, RouterModule];
+const COMMONS = [CommonModule, RouterModule];
 const COMPONENTS = [SharedUiLoadingComponent];
 
 @Component({
   selector: 'th-profile-info',
   standalone: true,
-  imports: [ANGULAR_MODULES, COMPONENTS],
+  imports: [COMMONS, COMPONENTS],
   template: `
     <div
       class="pt-8 pb-4 bg-gray-100 text-center min-h-[17.125rem] flex items-center"

@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { RouterModule } from "@angular/router";
 
-const ANGULAR_MODULES = [CommonModule, RouterModule];
+const COMMONS = [RouterModule];
 
 @Component({
   selector: 'th-articles-toggle',
   standalone: true,
-  imports: [ANGULAR_MODULES],
+  imports: [COMMONS],
   template: `
     <div class="mt-2 -mb-[1px]">
       <ul class="after:content-[''] table clear-both">

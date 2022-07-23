@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { provideComponentStore } from '@ngrx/component-store';
-import { IArticleFormData, SharedUiArticleFormComponent } from '../shared/ui/article-form/article-form.component';
-import { NewArticleStore } from './new-article.store';
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { provideComponentStore } from "@ngrx/component-store";
+import { IArticleFormData, SharedUiArticleFormComponent } from "../shared/ui";
+import { NewArticleStore } from "./new-article.store";
 
 @Component({
   selector: 'th-new-article',
   standalone: true,
-  imports: [CommonModule, SharedUiArticleFormComponent],
+  imports: [SharedUiArticleFormComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="container page lg:max-w-screen-lg mx-auto my-4 flex flex-col gap-4">

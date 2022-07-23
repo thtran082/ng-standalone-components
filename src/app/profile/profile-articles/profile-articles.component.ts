@@ -1,17 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { provideComponentStore } from '@ngrx/component-store';
-import { SharedUiArticleListComponent } from 'src/app/shared/ui';
-import { IArticle } from './../../shared/data-access/model';
-import { ProfileArticlesStore } from './profile-articles.store';
+import { AsyncPipe, NgIf } from "@angular/common";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { provideComponentStore } from "@ngrx/component-store";
+import { SharedUiArticleListComponent } from "src/app/shared/ui";
+import { IArticle } from "../../shared/data-access";
+import { ProfileArticlesStore } from "./profile-articles.store";
 
-const ANGULAR_MODULES = [CommonModule];
+const COMMONS = [NgIf, AsyncPipe];
 const COMPONENTS = [SharedUiArticleListComponent];
 
 @Component({
   selector: 'th-profile-articles',
   standalone: true,
-  imports: [ANGULAR_MODULES, COMPONENTS],
+  imports: [COMMONS, COMPONENTS],
   template: `
     <ng-container *ngIf="vm$ | async as vm">
       <th-article-list
@@ -25,10 +25,10 @@ const COMPONENTS = [SharedUiArticleListComponent];
   providers: [provideComponentStore(ProfileArticlesStore)],
 })
 export class ProfileArticlesComponent {
+  readonly vm$ = this._profileArticleStore.vm$;
+
   constructor(private _profileArticleStore: ProfileArticlesStore) {
   }
-
-  readonly vm$ = this._profileArticleStore.vm$;
 
   toggleFavorite(article: IArticle): void {
     this._profileArticleStore.toggleFavorite(article);

@@ -1,20 +1,12 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ViewEncapsulation
-} from '@angular/core';
-import { provideComponentStore } from '@ngrx/component-store';
-import { IArticle } from 'src/app/shared/data-access';
-import { SharedUiArticleListComponent } from '../shared/ui';
-import { HomeStore } from './home.store';
-import {
-  HomeUiBannerComponent,
-  HomeUiFeedToggleComponent,
-  HomeUiTagsComponent
-} from './ui';
+import { AsyncPipe, NgIf } from "@angular/common";
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from "@angular/core";
+import { provideComponentStore } from "@ngrx/component-store";
+import { IArticle } from "src/app/shared/data-access";
+import { SharedUiArticleListComponent } from "../shared/ui";
+import { HomeStore } from "./home.store";
+import { HomeUiBannerComponent, HomeUiFeedToggleComponent, HomeUiTagsComponent } from "./ui";
 
-const ANGULAR_MODULES = [CommonModule];
+const COMMONS = [NgIf, AsyncPipe];
 const COMPONENTS = [
   HomeUiTagsComponent,
   HomeUiBannerComponent,
@@ -26,7 +18,7 @@ const COMPONENTS = [
   selector: 'th-home',
   standalone: true,
   templateUrl: './home.component.html',
-  imports: [ANGULAR_MODULES, COMPONENTS],
+  imports: [COMMONS, COMPONENTS],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [provideComponentStore(HomeStore)],

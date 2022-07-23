@@ -1,21 +1,15 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-  ViewEncapsulation
-} from '@angular/core';
-import { IArticle } from 'src/app/shared/data-access/model';
-import { SharedUiSanitizerPipe } from 'src/app/shared/ui/pipes';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
+import { IArticle } from "src/app/shared/data-access/model";
+import { SharedUiSanitizerPipe } from "src/app/shared/ui/pipes";
+import { NgForOf, NgIf } from "@angular/common";
 
-const ANGULAR_MODULES = [CommonModule];
+const COMMONS = [NgForOf, NgIf];
 const PIPES = [SharedUiSanitizerPipe];
 
 @Component({
   selector: 'th-article-content',
   standalone: true,
-  imports: [ANGULAR_MODULES, PIPES],
+  imports: [COMMONS, PIPES],
   template: `
     <div id="page-article-content" class="my-6 ">
       <div *ngIf="article?.body" [innerHTML]="article!.body | sanitizer"></div>

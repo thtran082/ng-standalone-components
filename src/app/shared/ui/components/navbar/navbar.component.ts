@@ -5,14 +5,14 @@ import { RouterModule } from "@angular/router";
 import { AuthStore } from "../../../data-access";
 import { NavbarItemDirective } from "./navbar-item.directive";
 
-const ANGULAR_MODULES = [CommonModule, RouterModule];
+const COMMONS = [CommonModule, RouterModule];
 const MAT_MODULES = [CdkMenuModule];
 const DIRECTIVES = [NavbarItemDirective];
 
 @Component({
   selector: 'th-navbar',
   standalone: true,
-  imports: [ANGULAR_MODULES, MAT_MODULES, DIRECTIVES],
+  imports: [COMMONS, MAT_MODULES, DIRECTIVES],
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {

@@ -1,18 +1,17 @@
-import { CommonModule } from "@angular/common";
+import { AsyncPipe, KeyValuePipe, NgForOf, NgIf } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RegisterStore } from "./register.store";
 import { provideComponentStore } from "@ngrx/component-store";
 import { RouterModule } from "@angular/router";
 
-const ANGULAR_MODULES = [CommonModule, ReactiveFormsModule, RouterModule];
-const MODULES: any = [];
+const COMMONS = [NgIf, KeyValuePipe, NgForOf, AsyncPipe, ReactiveFormsModule, RouterModule];
 
 
 @Component({
   selector: "th-register",
   standalone: true,
-  imports: [ANGULAR_MODULES, MODULES],
+  imports: [COMMONS],
   templateUrl: "./register.component.html",
   providers: [provideComponentStore(RegisterStore)]
 })

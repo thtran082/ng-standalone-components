@@ -1,18 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { provideComponentStore } from '@ngrx/component-store';
-import { tap } from 'rxjs';
-import { SharedUiLoadingComponent } from './../shared/ui/loading/loading.component';
-import { ArticleStore } from './article.store';
+import { AsyncPipe, NgIf } from "@angular/common";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Title } from "@angular/platform-browser";
+import { provideComponentStore } from "@ngrx/component-store";
+import { tap } from "rxjs";
+import { SharedUiLoadingComponent } from "../shared/ui";
+import { ArticleStore } from "./article.store";
 import {
   ArticleUiArticleActionsComponent,
   ArticleUiArticleCommentsComponent,
   ArticleUiArticleContentComponent,
   ArticleUiArticleMetaComponent
-} from './ui';
+} from "./ui";
 
-const ANGULAR_MODULES = [CommonModule];
+const COMMONS = [NgIf, AsyncPipe];
 const COMPONENTS = [
   ArticleUiArticleMetaComponent,
   ArticleUiArticleActionsComponent,
@@ -24,7 +24,7 @@ const COMPONENTS = [
 @Component({
   selector: 'th-article',
   standalone: true,
-  imports: [ANGULAR_MODULES, COMPONENTS],
+  imports: [COMMONS, COMPONENTS],
   template: `
     <ng-container *ngIf="vm$ | async as vm">
       <th-article-meta

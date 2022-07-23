@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+import { DatePipe, NgClass, NgIf } from "@angular/common";
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { IArticle } from "src/app/shared/data-access";
 import { ApiStatus } from "src/app/shared/data-access/model";
@@ -7,14 +7,14 @@ import { SharedUtilsFirstWord } from "src/app/shared/ui/pipes";
 import { ArticleStore } from "../../article.store";
 import { RouterModule } from "@angular/router";
 
-const ANGULAR_MODULES = [CommonModule, RouterModule];
+const COMMONS = [NgIf, NgClass, DatePipe, RouterModule];
 const UTILS = [SharedUtilsFirstWord];
 const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
 
 @Component({
   selector: 'th-article-actions',
   standalone: true,
-  imports: [ANGULAR_MODULES, UTILS, DIRECTIVES],
+  imports: [COMMONS, UTILS, DIRECTIVES],
   template: `
     <div class="flex flex-row gap-6 items-center">
       <div class="flex flex-row items-center gap-2">

@@ -1,23 +1,18 @@
-import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
-import { IArticle } from 'src/app/shared/data-access';
-import { SharedUiSkeletonLoadingDirective } from 'src/app/shared/ui';
-import { ApiStatus } from './../../../shared/data-access/model';
-import { ArticleUiArticleActionsComponent } from './../article-actions/article-actions.component';
+import { NgClass } from "@angular/common";
+import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
+import { IArticle } from "src/app/shared/data-access";
+import { SharedUiSkeletonLoadingDirective } from "src/app/shared/ui";
+import { ApiStatus } from "../../../shared/data-access";
+import { ArticleUiArticleActionsComponent } from "../article-actions/article-actions.component";
 
-const ANGULAR_MODULES = [CommonModule];
+const COMMONS = [NgClass];
 const COMPONENTS = [ArticleUiArticleActionsComponent];
 const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
 
 @Component({
   selector: 'th-article-meta',
   standalone: true,
-  imports: [ANGULAR_MODULES, COMPONENTS, DIRECTIVES],
+  imports: [COMMONS, COMPONENTS, DIRECTIVES],
   template: `
     <div class="py-8 bg-slate-700 text-white min-h-[11rem]">
       <div class="container mx-auto flex flex-col gap-4 lg:max-w-screen-lg">

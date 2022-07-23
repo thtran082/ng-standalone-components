@@ -6,7 +6,7 @@ import { IProfile } from "./../shared/data-access/model";
 import { ProfileStore } from "./profile.store";
 import { ProfileUiArticlesToggleComponent, ProfileUiProfileInfoComponent } from "./ui";
 
-const ANGULAR_MODULES = [CommonModule, RouterModule];
+const COMMONS = [CommonModule, RouterModule];
 const COMPONENTS = [
   ProfileUiProfileInfoComponent,
   ProfileUiArticlesToggleComponent,
@@ -15,7 +15,7 @@ const COMPONENTS = [
 @Component({
   selector: 'th-profile',
   standalone: true,
-  imports: [ANGULAR_MODULES, COMPONENTS],
+  imports: [COMMONS, COMPONENTS],
   template: `
     <ng-container *ngIf="vm$ | async as vm">
       <th-profile-info
