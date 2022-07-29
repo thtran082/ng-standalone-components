@@ -5,4 +5,4 @@ export * from './auth-layout/auth-layout.component';
 export * from './directives';
 export * from './loading/loading.component';
 export * from './pipes';
-
+export * from './components';

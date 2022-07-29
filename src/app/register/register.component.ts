@@ -1,17 +1,18 @@
 import { AsyncPipe, KeyValuePipe, NgForOf, NgIf } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { RegisterStore } from "./register.store";
-import { provideComponentStore } from "@ngrx/component-store";
 import { RouterModule } from "@angular/router";
+import { provideComponentStore } from "@ngrx/component-store";
+import { SharedButtonComponent } from "../shared/ui";
+import { RegisterStore } from "./register.store";
 
 const COMMONS = [NgIf, KeyValuePipe, NgForOf, AsyncPipe, ReactiveFormsModule, RouterModule];
-
+const COMPONENTS = [SharedButtonComponent];
 
 @Component({
   selector: "th-register",
   standalone: true,
-  imports: [COMMONS],
+  imports: [COMMONS, COMPONENTS],
   templateUrl: "./register.component.html",
   providers: [provideComponentStore(RegisterStore)]
 })

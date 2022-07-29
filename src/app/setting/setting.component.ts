@@ -10,12 +10,12 @@ import {
 } from "@angular/forms";
 import { provideComponentStore } from "@ngrx/component-store";
 import { tap } from "rxjs";
-import { SharedUiLoadingComponent } from "../shared/ui";
-import { IUserSettings } from "./../shared/data-access/model";
+import { SharedButtonComponent, SharedUiLoadingComponent } from "../shared/ui";
+import { IUserSettings } from "../shared/data-access";
 import { SettingStore } from "./setting.store";
 
 const COMMONS = [CommonModule, ReactiveFormsModule];
-const COMPONENTS = [SharedUiLoadingComponent];
+const COMPONENTS = [SharedUiLoadingComponent, SharedButtonComponent];
 
 @Component({
   selector: 'th-setting',
@@ -107,18 +107,18 @@ const COMPONENTS = [SharedUiLoadingComponent];
         </fieldset>
 
         <button
-          [disabled]="form.invalid"
-          class="float-right font-titillium text-base primary"
+          th-button
+          thType="fill"
+          thColor="primary"
+          thShape="rounded"
+          class="float-right font-semibold"
           type="button"
+          loadingText="Loading"
+          [thStatus]="vm.status"
+          [disabled]="form.invalid"
           (click)="updateSettings()"
         >
-          <ng-container *ngIf="vm.status !== 'loading'; else loadingButton">
-            Update Settings
-          </ng-container>
-          <ng-template #loadingButton>
-            Loading
-            <th-loading></th-loading>
-          </ng-template>
+          Update Settings
         </button>
       </form>
     </div>
@@ -126,26 +126,6 @@ const COMPONENTS = [SharedUiLoadingComponent];
   providers: [provideComponentStore(SettingStore)],
 })
 export class SettingComponent {
-  readonly vm$ = this._settingStore.vm$.pipe(
-    tap((vm) => {
-      this.form.controls['email'].disable();
-      if (!vm?.user) return;
-      const {
-        user: { image, username, bio, email },
-      } = vm;
-      this.form.setValue({
-        image,
-        username,
-        bio,
-        email,
-        password: {
-          token: '',
-          confirmToken: '',
-        },
-      });
-    })
-  );
-
   constructor(private _fb: FormBuilder, private _settingStore: SettingStore) {}
 
   get isNotMatchedError() {
@@ -180,6 +160,25 @@ export class SettingComponent {
       }
     ),
   });
+  readonly vm$ = this._settingStore.vm$.pipe(
+    tap((vm) => {
+      this.form.controls['email'].disable();
+      if (!vm?.user) return;
+      const {
+        user: { image, username, bio, email },
+      } = vm;
+      this.form.setValue({
+        image,
+        username,
+        bio,
+        email,
+        password: {
+          token: '',
+          confirmToken: '',
+        },
+      });
+    })
+  );
 
   updateSettings(): void {
     const { token, confirmToken } = this.form.value.password!;

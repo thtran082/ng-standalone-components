@@ -69,16 +69,6 @@ textarea {
 }
 
 button {
-  @apply px-6 py-4 rounded;
-
-  &.primary {
-    @apply bg-blue-600 text-white capitalize;
-  }
-
-  &.secondary {
-    @apply bg-gray-400 text-white;
-  }
-
   &.secondary-outlined {
     @apply border border-gray-400 text-gray-400 bg-transparent;
 
@@ -86,11 +76,6 @@ button {
       @apply bg-gray-400 text-white;
     }
   }
-
-  &.danger {
-    @apply border bg-red-400 text-white;
-  }
-
   &.danger-outlined {
     @apply border border-red-400 text-red-400 bg-transparent;
 
@@ -127,6 +112,80 @@ input {
     &::placeholder {
       color: red !important;
       font-weight: lighter;
+    }
+  }
+}
+
+// button type
+.th-btn {
+  @apply px-6 py-4 border duration-200 font-titillium;
+  &-rounded {
+    @apply rounded;
+  }
+  &-outlined {
+    @apply bg-transparent;
+  }
+  &:not([disabled]):hover {
+    @apply opacity-90;
+  }
+  &-success {
+    @apply border-green-600;
+    &.th-btn-fill {
+      @apply bg-green-600 text-white;
+    }
+    &.th-btn-outlined {
+      @apply text-green-600;
+      &:hover:not([disabled]) {
+        @apply bg-green-600 text-white;
+      }
+    }
+  }
+  &-primary {
+    @apply border-blue-600;
+    &.th-btn-fill {
+      @apply bg-blue-600 text-white;
+    }
+    &.th-btn-outlined {
+      @apply text-blue-600;
+      &:hover:not([disabled]) {
+        @apply bg-blue-600 text-white;
+      }
+    }
+  }
+  &-secondary {
+    @apply border-gray-400;
+    &.th-btn-fill {
+      @apply bg-gray-400 text-white;
+    }
+    &.th-btn-outlined {
+      @apply text-gray-400;
+      &:hover:not([disabled]) {
+        @apply bg-gray-400 text-white;
+      }
+    }
+  }
+  &-danger {
+    @apply border-red-400;
+    &.th-btn-fill {
+      @apply bg-red-400 text-white;
+    }
+    &.th-btn-outlined {
+      @apply text-red-400;
+      &:hover:not([disabled]) {
+        @apply bg-red-400 text-white;
+      }
+    }
+  }
+  &-hard-danger {
+    @apply border-pink-600;
+    &.th-btn-fill {
+      @apply bg-pink-600 text-white;
+    }
+    &.th-btn-outlined {
+      @apply text-pink-600;
+      &:hover:not([disabled]) {
+        @apply bg-pink-600 text-white;
+      }
     }
   }
 }

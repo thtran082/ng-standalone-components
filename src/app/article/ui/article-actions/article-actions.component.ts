@@ -1,20 +1,24 @@
-import { DatePipe, NgClass, NgIf } from "@angular/common";
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { IArticle } from "src/app/shared/data-access";
-import { ApiStatus } from "src/app/shared/data-access/model";
-import { SharedUiSkeletonLoadingDirective } from "src/app/shared/ui";
-import { SharedUtilsFirstWord } from "src/app/shared/ui/pipes";
-import { ArticleStore } from "../../article.store";
-import { RouterModule } from "@angular/router";
+import { DatePipe, NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { IArticle } from 'src/app/shared/data-access';
+import { ApiStatus } from 'src/app/shared/data-access/model';
+import {
+  SharedButtonComponent,
+  SharedUiSkeletonLoadingDirective
+} from 'src/app/shared/ui';
+import { SharedUtilsFirstWord } from 'src/app/shared/ui/pipes';
+import { ArticleStore } from '../../article.store';
 
-const COMMONS = [NgIf, NgClass, DatePipe, RouterModule];
+const COMMONS = [NgIf, NgClass, NgTemplateOutlet, DatePipe, RouterModule];
+const COMPONENTS = [SharedButtonComponent];
 const UTILS = [SharedUtilsFirstWord];
 const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
 
 @Component({
   selector: 'th-article-actions',
   standalone: true,
-  imports: [COMMONS, UTILS, DIRECTIVES],
+  imports: [COMMONS, UTILS, DIRECTIVES, COMPONENTS],
   template: `
     <div class="flex flex-row gap-6 items-center">
       <div class="flex flex-row items-center gap-2">
@@ -47,12 +51,23 @@ const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
       </div>
       <div *ngIf="!isLoading" class="flex flex-row gap-2 h-full">
         <ng-container *ngIf="isOwner; else notOwner">
-          <button class="secondary-outlined !py-0.5 !px-2 text-sm">
+          <button
+            th-button
+            thType="outlined"
+            thShape="rounded"
+            thColor="secondary"
+            class="!py-0.5 !px-2 text-sm"
+          >
             <i class="ion-edit mr-1"></i>
             Edit Article
           </button>
           <button
-            class="danger-outlined !py-0.5 !px-2 text-sm"
+            th-button
+            thType="outlined"
+            thShape="rounded"
+            thColor="danger"
+            class=" !py-0.5 !px-2 text-sm"
+            f
             (click)="deleteArticle()"
           >
             <i class="ion-trash-a mr-1"></i>
@@ -65,37 +80,50 @@ const DIRECTIVES = [SharedUiSkeletonLoadingDirective];
     <ng-template #notOwner>
       <ng-container *ngIf="article?.author?.username">
         <button
+          th-button
+          thColor="success"
+          thShape="rounded"
+          [thType]="article?.author?.following ? 'fill' : 'outlined'"
           class="!py-0.5 !px-2 text-sm"
-          [ngClass]="{
-            'secondary-outlined': !article?.author?.following,
-            'secondary': article?.author?.following
-          }"
           (click)="toggleFollow()"
         >
-          <ng-container *ngIf="article?.author?.following; else followButton">
-            <i class="ion-minus-round mr-1"></i>
-            Unfollow {{ article?.author?.username }}
-          </ng-container>
+          <ng-template
+            *ngTemplateOutlet="
+              followProfile;
+              context: {
+                following: article?.author?.following,
+                username: article?.author?.username
+              }
+            "
+          ></ng-template>
         </button>
         <button
-          class="!py-0.5 !px-2 text-sm border border-pink-600"
-          [ngClass]="{
-            'hover:bg-pink-600 hover:text-white': true,
-            'bg-pink-600 text-white': article?.favorited,
-            'text-pink-500 ': !article?.favorited
-          }"
+          th-button
+          thColor="hard-danger"
+          thShape="rounded"
+          [thType]="article?.favorited ? 'fill' : 'outlined'"
+          class="!py-0.5 !px-2 text-sm"
           (click)="toggleFavorite()"
         >
           <i class="ion-heart mr-1"></i>
-          {{ article?.favorited ? 'favorited' : 'favorite' }}&nbsp;
+          <span>{{ article?.favorited ? 'favorited' : 'favorite' }}</span
+          >&nbsp;
           <em>({{ article?.favoritesCount }})</em>
         </button>
       </ng-container>
     </ng-template>
 
-    <ng-template #followButton>
-      <i class="ion-plus-round mr-1"></i>
-      Follow {{ article?.author?.username }}
+    <ng-template
+      #followProfile
+      let-username="username"
+      let-following="following"
+    >
+      <i
+        class="mr-1"
+        [class.ion-plus-round]="!following"
+        [class.ion-minus-round]="following"
+      ></i>
+      {{ !following ? 'Follow' : 'Unfollow' }} {{ article?.author?.username }}
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

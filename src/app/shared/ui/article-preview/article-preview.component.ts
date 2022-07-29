@@ -1,16 +1,18 @@
-import { CommonModule } from "@angular/common";
+import { DatePipe, NgClass, NgForOf, NgIf } from "@angular/common";
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { IArticle } from "src/app/shared/data-access";
+import { SharedButtonComponent } from "../components/button";
 import { SharedUtilsFirstWord } from "../pipes";
 
-const COMMONS = [CommonModule, RouterModule];
+const COMMONS = [NgIf, NgForOf, DatePipe, NgClass, RouterModule];
+const COMPONENTS = [SharedButtonComponent];
 const UTILS = [SharedUtilsFirstWord];
 
 @Component({
   selector: 'th-article-preview',
   standalone: true,
-  imports: [COMMONS, UTILS],
+  imports: [COMMONS, UTILS, COMPONENTS],
   template: `
     <div
       *ngIf="article; else noArticle"
@@ -48,11 +50,11 @@ const UTILS = [SharedUtilsFirstWord];
           </div>
         </div>
         <button
-          class="px-2 py-0 h-8 rounded border text-sm hover:bg-pink-600 hover:text-white duration-200"
-          [ngClass]="{
-            'bg-pink-600 text-white': article.favorited,
-            'text-pink-600 border-pink-600 bg-white': !article.favorited
-          }"
+          th-button
+          [thType]="article.favorited ? 'fill' : 'outlined'"
+          thColor="hard-danger"
+          thShape="rounded"
+          class="!px-2 !py-0 h-8"
           (click)="toggleFavorite.emit(article)"
         >
           <i class="ion-heart mr-1"></i>
@@ -74,7 +76,7 @@ const UTILS = [SharedUtilsFirstWord];
         <span>
           <ng-container *ngFor="let tag of article.tagList">
             <span
-              class="px-2 py-1 rounded-md border border-gray-300 text-gray-400 inline-block"
+              class="px-2 py-1 ml-2 rounded-md border border-gray-300 text-gray-400 inline-block"
             >
               <i class="ion-pricetag mr-1"></i>
               <span>{{ tag }}</span>

@@ -29,14 +29,8 @@
             </ng-container>
           </ng-container>
         </div>
-        <button [disabled]="form.invalid" class="self-end primary" type="submit">
-          <ng-container *ngIf="vm.status !== 'loading'; else loading">
-            Sign In
-          </ng-container>
-          <ng-template #loading>
-            Please wait
-            <th-loading></th-loading>
-          </ng-template>
+        <button [disabled]="form.invalid" [thShape]="'rounded'" [thStatus]="vm.status" th-button thType="outlined" type="submit">
+          Sign In
         </button>
       </div>
     </form>

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgForOf } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,10 +7,11 @@ import {
   OnInit,
   Output,
   ViewEncapsulation
-} from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IArticle } from './../../data-access/model';
-import { SharedStringUtils } from './../../utils/string.util';
+} from "@angular/core";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { IArticle } from "../../data-access";
+import { SharedStringUtils } from "../../utils";
+import { SharedButtonComponent } from "../components";
 
 export interface IArticleFormData {
   title: string;
@@ -22,7 +23,7 @@ export interface IArticleFormData {
 @Component({
   selector: 'th-article-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgForOf, SharedButtonComponent],
   template: `
     <form [formGroup]="form">
       <fieldset>
@@ -75,8 +76,10 @@ export interface IArticleFormData {
         </span>
       </div>
       <button
+        th-button
+        thShape="rounded"
         [disabled]="form.invalid"
-        class="float-right primary"
+        class="float-right"
         type="button"
         (click)="onSubmit()"
       >
@@ -88,17 +91,7 @@ export interface IArticleFormData {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedUiArticleFormComponent implements OnInit {
-  @Input() set article(article: IArticle) {
-    this.form.setValue({
-      title: article.title,
-      description: article.description,
-      body: article.body,
-      tagList: article.tagList,
-    });
-  }
-
   @Output() submit = new EventEmitter<IArticleFormData>();
-
   readonly form = this._fb.nonNullable.group({
     title: ['', [Validators.required]],
     description: ['', [Validators.required]],
@@ -107,6 +100,15 @@ export class SharedUiArticleFormComponent implements OnInit {
   });
 
   constructor(private _fb: FormBuilder) {}
+
+  @Input() set article(article: IArticle) {
+    this.form.setValue({
+      title: article.title,
+      description: article.description,
+      body: article.body,
+      tagList: article.tagList,
+    });
+  }
 
   ngOnInit(): void {}
 
