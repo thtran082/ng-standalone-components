@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { defer, filter, map, of, switchMap, tap } from 'rxjs';
-import { ApiClient } from './api';
-import { IAuthState } from './auth.state';
-import { NG_CONDUIT_TOKEN, NG_CONDUIT_USER } from './constants';
-import { LocalStorageService } from './local-storage.service';
-import { IUser } from './model';
+import { Injectable } from "@angular/core";
+import { Title } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { ComponentStore, tapResponse } from "@ngrx/component-store";
+import { defer, filter, map, of, switchMap, tap } from "rxjs";
+import { ApiClient } from "./api";
+import { IAuthState } from "./auth.state";
+import { NG_CONDUIT_TOKEN, NG_CONDUIT_USER } from "./constants";
+import { LocalStorageService } from "./local-storage.service";
+import { IUser } from "./model";
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore extends ComponentStore<IAuthState> {
@@ -33,25 +33,6 @@ export class AuthStore extends ComponentStore<IAuthState> {
     (isAuthenticated, user, profile) => ({ isAuthenticated, user, profile }),
     { debounce: true }
   );
-
-  constructor(
-    private _router: Router,
-    private _apiClient: ApiClient,
-    private _localStorageService: LocalStorageService,
-    private _titleService: Title
-  ) {
-    super(initialAuthState);
-  }
-
-  init() {
-    this._refresh();
-  }
-
-  authenticate(url: string[] = ['']) {
-    this._refresh();
-    void this._router.navigate(url);
-  }
-
   readonly updateAngularTitle = this.effect<void>(
     switchMap(() =>
       this.auth$.pipe(
@@ -65,16 +46,6 @@ export class AuthStore extends ComponentStore<IAuthState> {
       )
     )
   );
-
-  readonly logout = this.effect<void>(
-    tap(() => {
-      this._localStorageService.removeItem(NG_CONDUIT_TOKEN);
-      this._localStorageService.removeItem(NG_CONDUIT_USER);
-      void this._router.navigate(['/']);
-      this._refresh();
-    })
-  );
-
   private _refresh = this.effect<void>(
     switchMap(() =>
       defer(() => {
@@ -101,6 +72,32 @@ export class AuthStore extends ComponentStore<IAuthState> {
       )
     )
   );
+  readonly logout = this.effect<void>(
+    tap(() => {
+      this._localStorageService.removeItem(NG_CONDUIT_TOKEN);
+      this._localStorageService.removeItem(NG_CONDUIT_USER);
+      void this._router.navigate(['/']);
+      this._refresh();
+    })
+  );
+
+  constructor(
+    private _router: Router,
+    private _apiClient: ApiClient,
+    private _localStorageService: LocalStorageService,
+    private _titleService: Title
+  ) {
+    super(initialAuthState);
+  }
+
+  init() {
+    this._refresh();
+  }
+
+  authenticate(url: string[] = ['']) {
+    this._refresh();
+    void this._router.navigate(url);
+  }
 }
 
 export const initialAuthState: IAuthState = {

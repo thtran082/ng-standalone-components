@@ -16,7 +16,47 @@ const COMPONENTS = [AuthLayoutComponent,SharedUiLoadingComponent, SharedButtonCo
   providers: [LoginStore],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: `./login.component.html`,
+  template: `
+    <th-auth-layout>
+      <ng-container *ngIf="vm$ | async as vm">
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off"
+              class="flex flex-col gap-4 justify-center items-center mx-auto max-w-screen-sm">
+          <span class="text-center text-4xl text-blue-500 font-bold">Sign In</span>
+          <span class="text-center text-base text-gray-400">
+        <a routerLink="/register">Need an account?</a>
+      </span>
+          <fieldset class="w-full flex flex-col gap-2">
+            <input autocomplete="new-email" autofocus class="w-full" formControlName="email" placeholder="email" required
+                   type="text"/>
+            <span *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.['required']" class="text-red-400">
+          Required
+        </span>
+          </fieldset>
+          <fieldset class="w-full flex flex-col gap-2">
+            <input autocomplete="new-password" class="w-full" formControlName="password" placeholder="password" required
+                   type="password"/>
+            <span *ngIf="password.invalid && (password.dirty || password.touched) && password.errors?.['required']"
+                  class="text-red-400">
+          Required
+        </span>
+          </fieldset>
+          <div class="flex justify-between w-full">
+            <div class="text-red-500 self-start flex flex-row gap-2">
+              <ng-container *ngFor="let error of vm.errors | keyvalue">
+                <ng-container *ngFor="let msg of error.value">
+                  <span>{{error.key}} {{msg}}</span>
+                </ng-container>
+              </ng-container>
+            </div>
+            <button [disabled]="form.invalid" [thShape]="'rounded'" [thStatus]="vm.status" th-button thType="outlined" type="submit">
+              Sign In
+            </button>
+          </div>
+        </form>
+      </ng-container>
+    </th-auth-layout>
+
+  `,
 })
 export class LoginComponent implements OnInit {
   readonly form = this._fb.nonNullable.group({

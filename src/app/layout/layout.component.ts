@@ -11,16 +11,30 @@ const COMPONENTS = [HeaderComponent, FooterComponent, AuthLayoutComponent];
 const COMMONS = [RouterModule, AsyncPipe, NgIf, AsyncPipe];
 
 @Component({
-  selector: 'th-layout',
+  selector: "th-layout",
   standalone: true,
-  templateUrl: './layout.component.html',
+  template: `
+    <ng-container *ngIf="auth$ | async as auth">
+      <th-header [isAuthenticated]="auth.isAuthenticated" [username]="auth.user?.username || ''"></th-header>
+      <th-auth-layout *ngIf="auth.isAuthenticated; else nonAuthenticated">
+        <router-outlet></router-outlet>
+      </th-auth-layout>
+      <th-footer></th-footer>
+    </ng-container>
+
+    <ng-template #nonAuthenticated>
+      <router-outlet></router-outlet>
+    </ng-template>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [COMPONENTS, COMMONS],
 })
 export class LayoutComponent implements OnInit {
   readonly auth$ = this._authStore.auth$;
 
-  constructor(private _authStore: AuthStore) {}
+  constructor(private _authStore: AuthStore) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }
