@@ -1,3 +1,4 @@
+import { OverlayModule } from '@angular/cdk/overlay';
 import { AsyncPipe, NgIf } from "@angular/common";
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from "@angular/core";
 import { provideComponentStore } from "@ngrx/component-store";
@@ -20,7 +21,7 @@ const COMPONENTS = [
   imports: [COMMONS, COMPONENTS],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [provideComponentStore(HomeStore)],
+  providers: [provideComponentStore(HomeStore), OverlayModule],
   template: `
     <ng-container *ngIf="vm$ | async as vm">
       <th-banner [user]="vm.auth.user"></th-banner>

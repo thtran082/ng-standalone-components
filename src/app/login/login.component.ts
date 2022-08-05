@@ -26,14 +26,14 @@ const COMPONENTS = [AuthLayoutComponent,SharedUiLoadingComponent, SharedButtonCo
         <a routerLink="/register">Need an account?</a>
       </span>
           <fieldset class="w-full flex flex-col gap-2">
-            <input autocomplete="new-email" autofocus class="w-full" formControlName="email" placeholder="email" required
+            <input autofocus autocomplete="new-email" autofocus class="w-full" formControlName="email" placeholder="email" required
                    type="text"/>
             <span *ngIf="email.invalid && (email.dirty || email.touched) && email.errors?.['required']" class="text-red-400">
           Required
         </span>
           </fieldset>
           <fieldset class="w-full flex flex-col gap-2">
-            <input autocomplete="new-password" class="w-full" formControlName="password" placeholder="password" required
+            <input autofocus autocomplete="new-password" class="w-full" formControlName="password" placeholder="password" required
                    type="password"/>
             <span *ngIf="password.invalid && (password.dirty || password.touched) && password.errors?.['required']"
                   class="text-red-400">
@@ -60,8 +60,8 @@ const COMPONENTS = [AuthLayoutComponent,SharedUiLoadingComponent, SharedButtonCo
 })
 export class LoginComponent implements OnInit {
   readonly form = this._fb.nonNullable.group({
-    email: ['', [Validators.email, Validators.required]],
-    password: ['', Validators.required],
+    email: ['huy_test_account@gmail.com', [Validators.email, Validators.required]],
+    password: ['123456', Validators.required],
   });
 
   readonly vm$ = this._store.vm$;

@@ -1,9 +1,9 @@
 import { CdkMenuModule } from "@angular/cdk/menu";
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation, } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { AuthStore } from "../../../shared/data-access";
-import { NavbarComponent, NavbarItemDirective, } from "../../../shared/ui";
+import { NavbarComponent, NavbarItemDirective } from "../../../shared/ui";
 
 const COMMONS = [CommonModule, RouterModule];
 const MAT_MODULES = [CdkMenuModule];
@@ -15,7 +15,7 @@ const DIRECTIVES = [NavbarItemDirective];
   standalone: true,
   imports: [COMMONS, MAT_MODULES, COMPONENTS, DIRECTIVES],
   template: `
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto">
       <th-navbar>
         <ng-template thNavbarItem link="/">home</ng-template>
         <ng-template thNavbarItem link="/new-article">

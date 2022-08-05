@@ -1,42 +1,15 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
 @import "./styles/index";
-
-@include mat.core();
-// Plus imports for other components in your app.
-
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$ng-standalone-components-primary: mat.define-palette(mat.$indigo-palette);
-$ng-standalone-components-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
-$ng-standalone-components-warn: mat.define-palette(mat.$red-palette);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$ng-standalone-components-theme: mat.define-light-theme((color: (primary: $ng-standalone-components-primary,
-        accent: $ng-standalone-components-accent,
-        warn: $ng-standalone-components-warn,
-      )));
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($ng-standalone-components-theme);
+@import "@angular/cdk/overlay-prebuilt.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
 body {
-  @apply h-full w-full absolute overflow-auto box-border font-source-sans-pro;
+  @apply h-full w-full absolute overflow-auto box-border font-source-sans-pro bg-zinc-50;
 }
 
 html,

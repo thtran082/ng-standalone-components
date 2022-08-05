@@ -71,7 +71,7 @@ const UTILS = [SharedUtilsFirstWord];
 
       <div class="flex flex-row justify-between items-end">
         <a class="text-gray-400 font-light hover:!text-blue-600 hover:underline" [routerLink]="'/article/' + article.slug">
-          Read more...
+          {{ article.updatedAt | date: 'mediumDate' }}
         </a>
         <span>
           <ng-container *ngFor="let tag of article.tagList">
